@@ -16,22 +16,33 @@ namespace NewsManager.WebUI.Controllers
     public class NewsController : Controller
     {
         private readonly INewsRepository _repo;
-
+        public int PageSize = 10;
         public NewsController()
         {
             this._repo = new NewsRepository();
         }
 
         // GET: News
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
             NewsModel model = new NewsModel
             {
-                Entities = _repo.NewsEntities.ToList()
+                Entities = _repo.NewsEntities
+                    .OrderBy(p => p.NewsID)
+                    .Skip((page - 1)*PageSize)
+                    .Take(PageSize).ToList(),
+            
+            PagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = PageSize,
+                TotalItems = _repo.NewsEntities.Count()
+            }
             };
+               
             return View(model);
         }
-
+        
         // GET: News/Details/5
         public ActionResult Details(int? id)
         {
@@ -125,5 +136,7 @@ namespace NewsManager.WebUI.Controllers
             _repo.Delete(id);
             return RedirectToAction("Index");
         }
+
+        
     }
 }

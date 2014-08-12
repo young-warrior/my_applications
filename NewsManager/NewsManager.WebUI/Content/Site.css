@@ -1,61 +1,69 @@
-﻿body {
-    font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
-    color: #232323;
-    background-color: #fff;
+﻿BODY
+{
+  font-family: Cambria, Georgia, "Times New Roman";
+  margin: 0;
 }
 
-header, footer, nav, section {
-    display: block;
+DIV#header DIV.title, DIV.pager
+{
+  font: bold 1em "Arial Narrow", "Franklin Gothic Medium", Arial;
 }
 
-
-/* Styles for basic forms
------------------------------------------------------------*/
-fieldset {
-    border: 1px solid #ddd;
-    padding: 0 1.4em 1.4em 1.4em;
-    margin: 0 0 1.5em 0;
+DIV#header
+{
+  background-color: #444;
+  border-bottom: 2px solid #111;
+  color: White;
 }
 
-legend {
-    font-size: 1.2em;
-    font-weight: bold;
+  DIV#header DIV.title
+  {
+    font-size: 2em;
+    padding: .6em;
+  }
+  DIV#content
+{
+  border-left: 2px solid gray;
+  margin-left: 9em;
+  padding: 1em;
 }
 
-textarea {
-    min-height: 75px;
+DIV#categories
+{
+  float: left;
+  width: 8em;
+  padding: .3em;
 }
 
-.editor-label {
-    margin: 1em 0 0 0;
+DIV.pager
+{
+  text-align: center;
+  border-top: 2px solid silver;
+  padding: .5em 0 0 0;
+  margin-top: 1em;
 }
+DIV.pager A
+  {
+    font-size: 1.1em;
+    color: #666;
+    text-decoration: none;
+    padding: 0 .4em 0 .4em;
+  }
 
-.editor-field {
-    margin: 0.5em 0 0 0;
-}
+    DIV.pager A:hover
+    {
+      background-color: Silver;
+    }
 
+    DIV.pager A.selected
+    {
+      background-color: #353535;
+      color: White;
+    }
+    hr 
+    {
+       border-width: 0px; 
+    }
+  
 
-/* Styles for validation helpers
------------------------------------------------------------*/
-.field-validation-error {
-    color: #f00;
-}
-
-.field-validation-valid {
-    display: none;
-}
-
-.input-validation-error {
-    border: 1px solid #f00;
-    background-color: #fee;
-}
-
-.validation-summary-errors {
-    font-weight: bold;
-    color: #f00;
-}
-
-.validation-summary-valid {
-    display: none;
-}
+  
