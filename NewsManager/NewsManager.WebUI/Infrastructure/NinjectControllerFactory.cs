@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Moq;
 using NewsManager.Domain.Abstract;
+using NewsManager.Domain.DAL;
 using NewsManager.Domain.Entities;
 using Ninject;
 
@@ -42,8 +43,9 @@ namespace NewsManager.WebUI.Infrastructure
 //          new News { Title = "News3", CreatedDate = 10.00, BodyNews = "therd news" }
 //        }.AsQueryable());
 
-//            ninjectKernel.Bind<INewsRepository>().ToConstant(mock.Object);
             
+//            ninjectKernel.Bind<INewsRepository>().ToConstant(mock.Object);
+            ninjectKernel.Bind<INewsRepository>().To<NewsRepository>();
         }
         
     }

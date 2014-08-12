@@ -6,9 +6,10 @@ using NewsManager.Domain.Entities;
 
 namespace NewsManager.WebUI.Models
 {
-    public class NewsModel
+    public  class NewsModel
     {
         public IList<News> Entities { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public string CurrentCategory { get; set; }
     }
 }

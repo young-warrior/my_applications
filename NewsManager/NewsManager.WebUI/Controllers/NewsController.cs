@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -16,18 +17,19 @@ namespace NewsManager.WebUI.Controllers
     public class NewsController : Controller
     {
         private readonly INewsRepository _repo;
-        public int PageSize = 10;
+        public int PageSize = 5;
         public NewsController()
         {
             this._repo = new NewsRepository();
         }
 
         // GET: News
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(string category,int page = 1)
         {
             NewsModel model = new NewsModel
             {
                 Entities = _repo.NewsEntities
+                    .Where(p => category == null || p.Category == category)
                     .OrderBy(p => p.NewsID)
                     .Skip((page - 1)*PageSize)
                     .Take(PageSize).ToList(),
@@ -37,7 +39,8 @@ namespace NewsManager.WebUI.Controllers
                 CurrentPage = page,
                 ItemsPerPage = PageSize,
                 TotalItems = _repo.NewsEntities.Count()
-            }
+            },
+            CurrentCategory = category
             };
                
             return View(model);

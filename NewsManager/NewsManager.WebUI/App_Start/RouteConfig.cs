@@ -12,16 +12,43 @@ namespace NewsManager.WebUI
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapRoute(
-        name: null,
-        url: "Page{page}",
-        defaults: new { Controller = "Product", action = "List" }
-      );
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "News", action = "Index", id = UrlParameter.Optional }
-            );
+            
+            routes.MapRoute(null,
+            "",
+            new
+        {
+            controller = "News",
+            action = "Index",
+            category = (string)null,
+            page = 1
         }
+      );
+
+
+            routes.MapRoute(
+         null,
+       "Page{page}",
+        new { Controller = "News", action = "Index",caregory =(string)null },
+        new {page = @"\d+"}
+      );
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "News", action = "Index", id = UrlParameter.Optional }
+            //);
+            routes.MapRoute(null,
+            "{category}",
+            new { controller = "News", action = "Index", page = 1 }
+          );
+
+            routes.MapRoute(null,
+              "{category}/Page{page}",
+              new { controller = "News", action = "Index" },
+              new { page = @"\d+" }
+            );
+
+            routes.MapRoute(null, "{controller}/{action}");
+        }
+
     }
 }

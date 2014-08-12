@@ -1,19 +1,18 @@
-﻿@model NewsManager.WebUI.Models.NewsModel
+﻿
+@model NewsManager.WebUI.Models.NewsModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "NEW MANAGER";
 }
-
-            
-                <table>
+           
+   <table>
 
                     <tr>
                         <p>@Html.ActionLink("Add a new news", "Create")</p>
                     </tr>
-
+       <tr>
+           <p>@Html.ActionLink("Add a new news", "Create")</p>
+       </tr>
                     <tr>
-                        <th>
-                            Category
-                        </th>
                         <th>
                             Title
                         </th>
@@ -35,9 +34,6 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td>
                                 @Html.DisplayFor(modelItem => item.Title)
                             </td>
                             <td>
@@ -58,7 +54,8 @@
                     }
                 </table>
            
-        <div class="pager ">
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
-        </div>
+   <div class="pager ">
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index",
+    new { page = x,category = Model.CurrentCategory}))
+   </div>
       
