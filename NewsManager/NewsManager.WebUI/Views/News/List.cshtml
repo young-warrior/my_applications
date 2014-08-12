@@ -1,0 +1,15 @@
+﻿@model IEnumerable<NewsManager.Domain.Entities.News>
+
+@{
+    ViewBag.Title = "List";
+    this.Layout = "_Layout.cshtml";
+}
+
+@foreach (var p in Model)
+{
+    <div class="item">
+        <h3>@p.Title</h3>
+        @p.BodyNews
+        @*<h4>@p.Price.ToString("c")</h4>*@
+    </div>
+}

@@ -1,0 +1,60 @@
+﻿@model NewsManager.WebUI.Models.NewsModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>News MAnager</h2>
+
+<table>
+
+    <tr>
+        <p>@Html.ActionLink("Add a new news", "Create")</p>
+    </tr>
+    
+    <tr>
+        <th>
+           Category
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Created Date
+        </th>
+        <th>
+            Body News
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Entities)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodyNews)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.NewsID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.NewsID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
+            </td>
+        </tr>
+    }
+    </table>
