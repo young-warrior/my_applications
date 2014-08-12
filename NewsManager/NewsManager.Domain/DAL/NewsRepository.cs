@@ -17,6 +17,7 @@ namespace NewsManager.Domain.DAL
             News dbEntity = this.FindById(news.NewsID);
             if (dbEntity != null)
             {
+                dbEntity.Title = news.Title;
                 dbEntity.BodyNews = news.BodyNews;
                 dbEntity.Category = news.Category;
                 dbEntity.Status = news.Status;

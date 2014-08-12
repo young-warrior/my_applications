@@ -11,7 +11,7 @@ namespace NewsManager.Domain.DAL
         {
         }
 
-        public DbSet<News> News { get; set; }
+        public  DbSet<News> News { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

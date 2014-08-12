@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<string>
 
-@Html.ActionLink("News","Index","News")
+@Html.ActionLink("News", "Index", "News")
 
-@foreach (var link in Model)
+@foreach (string link in Model)
 {
     @Html.RouteLink(link, new
     {
@@ -12,5 +12,12 @@
         page = 1
     })
 }
-   
+    
+
+
+
+
+
+
+
 
