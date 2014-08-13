@@ -2,7 +2,7 @@
 {
     public enum NewsStatusType
     {
-        Unread = 1,
-        Read = 2
+        inactive = 1,
+        active = 2
     }
 }

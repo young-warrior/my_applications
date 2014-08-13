@@ -21,7 +21,7 @@
                                        Category =
                                            new CategoryNews()
                                             { Name = CategoriesNews.SPORT.ToString() },
-                                       Status = NewsStatusType.Read
+                    Status = NewsStatusType.active
                                    },
                                new News
                                    {
@@ -32,7 +32,7 @@
                                        Category =
                                            new CategoryNews()
                                             { Name = CategoriesNews.WEATHER.ToString() },
-                                       Status = NewsStatusType.Unread
+                    Status = NewsStatusType.inactive
                                    }
                            };
             news.ForEach(s => context.News.Add(s));

@@ -9,7 +9,7 @@ namespace NewsManager.Domain.Entities
         public News()
         {
             // set initial status as Unread
-            this.Status = NewsStatusType.Unread;
+            this.Status = NewsStatusType.inactive;
             
             // set initial date to current date time
             this.CreatedDate = DateTime.UtcNow;
@@ -33,6 +33,7 @@ namespace NewsManager.Domain.Entities
         
         [StringLength(Int32.MaxValue)]
         public string BodyNews { get; set; }
+
         public NewsStatusType Status { get; set; }
 
         public virtual CategoryNews Category { get; set; }
