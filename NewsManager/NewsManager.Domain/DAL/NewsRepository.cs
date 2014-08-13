@@ -32,6 +32,11 @@ namespace NewsManager.Domain.DAL
             return _context.News.Find(id);
         }
 
+        public CategoryNews FindCateoryByName(String cateogry)
+        {
+            return _context.CategoriesNews.SingleOrDefault(x => x.Name == cateogry);
+        }
+
         public void Delete(int id)
         {
             News news = FindById(id);
@@ -46,7 +51,20 @@ namespace NewsManager.Domain.DAL
         {
             if (news != null)
             {
-              // set Created date on  intial create
+               // Sets "Created date" on initial create
+                var category = this.FindCateoryByName(news.Category.Name);
+                if (category == null)
+                {
+                    news.Category = _context.CategoriesNews.Add(new CategoryNews()
+                                                    {
+                                                        Name = news.Category.Name
+                                                    });
+                }
+                else
+                {
+                    news.Category = category;
+                }
+
                 news.CreatedDate = DateTime.UtcNow;
                 _context.News.Add(news);
                 _context.SaveChanges();

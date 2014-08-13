@@ -8,6 +8,8 @@ using NewsManager.Domain.DAL;
 
 namespace NewsManager.WebUI.Controllers
 {
+    using System.Data.Entity;
+
     public class NavController : Controller
     {
         // GET: Nav
@@ -21,7 +23,9 @@ namespace NewsManager.WebUI.Controllers
         public PartialViewResult Menu()
         {
             IEnumerable<string> categories = repository.NewsEntities
-              .Select(x => x.Category)
+              .Include(x => x.Category)
+              .Where(x => x.Category != null)
+              .Select(x => x.Category.Name)
               .Distinct()
               .OrderBy(x => x)
               .ToList();

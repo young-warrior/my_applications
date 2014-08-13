@@ -9,6 +9,8 @@ using NewsManager.WebUI.Models;
 
 namespace NewsManager.WebUI.Controllers
 {
+    using System.Data.Entity;
+
     public class NewsController : Controller
     {
         private readonly INewsRepository _repo;
@@ -24,7 +26,9 @@ namespace NewsManager.WebUI.Controllers
         {
             // gets news by category
             IQueryable<News> entities = _repo.NewsEntities
-                .Where(p => string.IsNullOrEmpty(category) || p.Category == category)
+                .Include(x=>x.Category)
+                .Where(p => string.IsNullOrEmpty(category) 
+                    || (p.Category != null && p.Category.Name == category))
                 .OrderBy(p => p.NewsID)
                 .Skip((page - 1)*PageSize)
                 .Take(PageSize);
@@ -35,10 +39,10 @@ namespace NewsManager.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    //TotalItems = _repo.NewsEntities.Count()
                     TotalItems = category == null
                         ? _repo.NewsEntities.Count()
-                        : _repo.NewsEntities.Count(e => e.Category == category)
+                        : _repo.NewsEntities.Include(x => x.Category).Count(e => e.Category != null 
+                            && e.Category.Name == category)
                 },
                 CurrentCategory = category
             };
@@ -94,7 +98,6 @@ namespace NewsManager.WebUI.Controllers
         // GET: News/Create
         public ActionResult Create()
         {
-            ;
             return View("Edit", new News());
         }
 

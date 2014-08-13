@@ -2,17 +2,13 @@
 
 @Html.ActionLink("News", "Index", "News")
 
-@foreach (string link in Model)
-{
-    @Html.RouteLink(link, new
+<div style="margin-left: 10px">
+    @foreach (string link in Model)
     {
-        controller = "News",
-        action = "Index",
-        category = link,
-        page = 1
-    })
-}
-    
+        @Html.RouteLink(link, new { controller = "News", action = "Index", category = link, page = 1 })
+    }
+</div>
+
 
 
 

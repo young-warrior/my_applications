@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NewsManager.Domain.Entities
 {
-    public class News
+    public class News : INews
     {
         public News()
         {
@@ -14,11 +14,9 @@ namespace NewsManager.Domain.Entities
             // set initial date to current date time
             this.CreatedDate = DateTime.UtcNow;
         }
-
         
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NewsID { get; set; }
-        
         
         [StringLength(1000)]
         [DataType(DataType.MultilineText)]
@@ -37,6 +35,6 @@ namespace NewsManager.Domain.Entities
         public string BodyNews { get; set; }
         public NewsStatusType Status { get; set; }
 
-        public string Category { get; set; }
+        public virtual CategoryNews Category { get; set; }
     }
 }
