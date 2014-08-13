@@ -20,7 +20,7 @@ namespace NewsManager.WebUI.Controllers
         }
 
         // GET: News
-        public ActionResult Index(string id, string sortOrder, string category, int page)
+        public ActionResult Index(string searchString, string sortOrder, string category, int page)
         {
             
             IQueryable<News> entities = _repo.NewsEntities
@@ -67,14 +67,15 @@ namespace NewsManager.WebUI.Controllers
             model.Entities = ns.ToList();
             
             //Filter
-            string searchString = id;
+           
             var filter = from m in _repo.NewsEntities
                          select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 filter = filter.Where(s => s.Title.Contains(searchString));
-            } 
+            }
+            //model.Entities = filter.ToList();
 
             return View(model);
         }

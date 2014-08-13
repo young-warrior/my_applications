@@ -14,8 +14,7 @@
         <p>@Html.ActionLink("Add a new news", "Create")</p>
     </tr>
     <tr>
-        @using (Html.BeginForm("News", "Index", new{ id = Model.CurrentCategory}
-            ))
+        @using (Html.BeginForm())
         {
             <p>
                 Title: @Html.TextBox("SearchString") 
