@@ -22,13 +22,13 @@ namespace NewsManager.WebUI.Controllers
         // GET: News
         public ActionResult Index(string searchString, string sortOrder, string category, int page)
         {
-            
+            // gets news by category
             IQueryable<News> entities = _repo.NewsEntities
                 .Where(p => string.IsNullOrEmpty(category) || p.Category == category)
                 .OrderBy(p => p.NewsID)
                 .Skip((page - 1)*PageSize)
                 .Take(PageSize);
-            //сортировка по категории
+            
             var model = new NewsModel
             {
                 PagingInfo = new PagingInfo
@@ -42,40 +42,34 @@ namespace NewsManager.WebUI.Controllers
                 },
                 CurrentCategory = category
             };
-            //фильтрация в колонках Title, CreatesDate
+            //            filter order by Title, CreatesDate
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
             ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
 
-            IQueryable<News> ns = entities;
-
+            IQueryable<News> query = entities;
+            
             switch (sortOrder)
             {
                 case "Title":
-                    ns = ns.OrderByDescending(s => s.Title);
+                    query = query.OrderByDescending(s => s.Title);
                     break;
                 case "CreateDate":
-                    ns = ns.OrderBy(s => s.CreatedDate);
+                    query = query.OrderBy(s => s.CreatedDate);
                     break;
                 case "Date":
-                    ns = ns.OrderByDescending(s => s.CreatedDate);
+                    query = query.OrderByDescending(s => s.CreatedDate);
                     break;
                 default:
-                    ns = ns.OrderBy(s => s.Title);
+                    query = query.OrderBy(s => s.Title);
                     break;
             }
-
-            model.Entities = ns.ToList();
-            
-            //Filter
-           
-            var filter = from m in _repo.NewsEntities
-                         select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                filter = filter.Where(s => s.Title.Contains(searchString));
+                query = query.Where(s => s.Title.Contains(searchString));
             }
-            //model.Entities = filter.ToList();
+
+            model.Entities = query.ToList();
 
             return View(model);
         }

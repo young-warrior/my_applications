@@ -53,6 +53,7 @@
     <Compile Include="DAL\NewsRepository.cs" />
     <Compile Include="DAL\DBContext.cs" />
     <Compile Include="DAL\NewsInitializer.cs" />
+    <Compile Include="Entities\CategoriesNews.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\NewsStatusType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

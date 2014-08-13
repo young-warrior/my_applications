@@ -19,7 +19,7 @@ namespace NewsManager.Domain.DAL
                     Title = "TITLE NEWS",
                     CreatedDate = DateTime.UtcNow,
                     BodyNews = "BODY NEWS",
-                    Category = "SPORT",
+                    Category = CategoriesNews.SPORT.ToString(),
                     Status = NewsStatusType.Read
                 },
 
@@ -29,7 +29,7 @@ namespace NewsManager.Domain.DAL
                     Title = "TITLE NEWS FOR NEW NEWS",
                     CreatedDate = DateTime.UtcNow,
                     BodyNews = "THIS IS UNREAD NEWS",
-                    Category = "IMPORTANT NEWS",
+                    Category = CategoriesNews.WEATHER.ToString(),
                     Status = NewsStatusType.Unread
                 }
             };
