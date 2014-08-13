@@ -146,7 +146,8 @@ namespace NewsManager.WebUI.Controllers
         }
 
 
-        // GET: News/Delete/5
+        // POST: News/Delete/5
+        [HttpPost]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -158,16 +159,15 @@ namespace NewsManager.WebUI.Controllers
             {
                 return HttpNotFound();
             }
-            return View(news);
-        }
 
-        // POST: News/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            _repo.Delete(id);
-            return RedirectToAction("Index");
+            _repo.Delete(id.Value);
+            
+            return new JsonResult()
+                       {
+                           Data = new {
+                               deleted = true
+                           }
+                       };
         }
     }
 }

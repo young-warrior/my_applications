@@ -1,15 +1,30 @@
-﻿
-@using System.Web.UI.HtmlControls
-@using System.Web.UI.WebControls
-@using NewsManager.Domain.Entities
+﻿@using NewsManager.Domain.Entities
 @model NewsManager.WebUI.Models.NewsModel
 
 @{
     ViewBag.Title = "NEWS MANAGER";
 }
+
+<script>
+    function deleleNews(message, id) {
+
+        var serviceUrl = '/News/Delete?id=' + id;
+        if (confirm(message)) {
+            $.ajax({
+                type: "POST",
+                url: serviceUrl,
+                data: param = "",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+            });
+        }
+         
+        return true;
+    }
+</script>
            
 <table>
-
+    
     <tr>
         <p>@Html.ActionLink("Add a new news", "Create")</p>
     </tr>
@@ -65,7 +80,15 @@
                 @Html.ActionLink("Details", "Details", new {id = item.NewsID})
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new {id = item.NewsID})
+                @Html.ActionLink(
+                    "Delete",
+                    "Index",
+                    null,
+                 new
+                 {
+                     onclick = String.Format("return deleleNews('{0}', {1});",
+                        string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID)
+                    })
             </td>
         </tr>
     }
