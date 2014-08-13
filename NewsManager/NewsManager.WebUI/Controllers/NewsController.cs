@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using NewsManager.Domain.Abstract;
 using NewsManager.Domain.DAL;
@@ -18,35 +13,74 @@ namespace NewsManager.WebUI.Controllers
     {
         private readonly INewsRepository _repo;
         public int PageSize = 5;
+
         public NewsController()
         {
-            this._repo = new NewsRepository();
+            _repo = new NewsRepository();
         }
 
         // GET: News
-        public ActionResult Index(string category,int page = 1)
+        public ActionResult Index(string id, string sortOrder, string category, int page)
         {
-            NewsModel model = new NewsModel
-            {
-                Entities = _repo.NewsEntities
-                    .Where(p => category == null || p.Category == category)
-                    .OrderBy(p => p.NewsID)
-                    .Skip((page - 1)*PageSize)
-                    .Take(PageSize).ToList(),
             
-            PagingInfo = new PagingInfo
+            IQueryable<News> entities = _repo.NewsEntities
+                .Where(p => string.IsNullOrEmpty(category) || p.Category == category)
+                .OrderBy(p => p.NewsID)
+                .Skip((page - 1)*PageSize)
+                .Take(PageSize);
+            //сортировка по категории
+            var model = new NewsModel
             {
-                CurrentPage = page,
-                ItemsPerPage = PageSize,
-                TotalItems = _repo.NewsEntities.Count()
-            },
-            CurrentCategory = category
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    //TotalItems = _repo.NewsEntities.Count()
+                    TotalItems = category == null
+                        ? _repo.NewsEntities.Count()
+                        : _repo.NewsEntities.Count(e => e.Category == category)
+                },
+                CurrentCategory = category
             };
-               
+            //фильтрация в колонках Title, CreatesDate
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
+            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
+
+            IQueryable<News> ns = entities;
+
+            switch (sortOrder)
+            {
+                case "Title":
+                    ns = ns.OrderByDescending(s => s.Title);
+                    break;
+                case "CreateDate":
+                    ns = ns.OrderBy(s => s.CreatedDate);
+                    break;
+                case "Date":
+                    ns = ns.OrderByDescending(s => s.CreatedDate);
+                    break;
+                default:
+                    ns = ns.OrderBy(s => s.Title);
+                    break;
+            }
+
+            model.Entities = ns.ToList();
+            
+            //Filter
+            string searchString = id;
+            var filter = from m in _repo.NewsEntities
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                filter = filter.Where(s => s.Title.Contains(searchString));
+            } 
+
             return View(model);
         }
-        
-        // GET: News/Details/5
+
+
+        //GET: News/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -65,6 +99,7 @@ namespace NewsManager.WebUI.Controllers
         // GET: News/Create
         public ActionResult Create()
         {
+            ;
             return View("Edit", new News());
         }
 
@@ -139,7 +174,5 @@ namespace NewsManager.WebUI.Controllers
             _repo.Delete(id);
             return RedirectToAction("Index");
         }
-
-        
     }
 }

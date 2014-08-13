@@ -1,61 +1,92 @@
 ﻿
+@using System.Web.UI.HtmlControls
+@using System.Web.UI.WebControls
+@using NewsManager.Domain.Entities
 @model NewsManager.WebUI.Models.NewsModel
+
 @{
-    ViewBag.Title = "NEW MANAGER";
+    ViewBag.Title = "NEWS MANAGER";
 }
            
-   <table>
+<table>
 
-                    <tr>
-                        <p>@Html.ActionLink("Add a new news", "Create")</p>
-                    </tr>
-       <tr>
-           <p>@Html.ActionLink("Add a new news", "Create")</p>
-       </tr>
-                    <tr>
-                        <th>
-                            Title
-                        </th>
-                        <th>
-                            Created Date
-                        </th>
-                        <th>
-                            Body News
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Actions
-                        </th>
-                    </tr>
+    <tr>
+        <p>@Html.ActionLink("Add a new news", "Create")</p>
+    </tr>
+    <tr>
+        @using (Html.BeginForm("News", "Index", new{ id = Model.CurrentCategory}
+            ))
+        {
+            <p>
+                Title: @Html.TextBox("SearchString") 
+                <input type="submit" value="Filter" />
+            </p>
+        } 
+    </tr>
+    <tr>
+        <th>
+                            
+            @Html.ActionLink("Title", "Index", new {sortOrder = ViewBag.NameSortParm, category = Model.CurrentCategory})
 
-                    @foreach (var item in Model.Entities)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BodyNews)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.NewsID }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.NewsID }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.NewsID })
-                            </td>
-                        </tr>
-                    }
-                </table>
+        </th>
+        <th>
+            @Html.ActionLink("CreatedDate", "Index", new {sortOrder = ViewBag.DateSortParm, category = Model.CurrentCategory})
+                            
+        </th>
+        <th>
+            Body News
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+    @foreach (News item in Model.Entities)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodyNews)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.NewsID}) 
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new {id = item.NewsID})
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new {id = item.NewsID})
+            </td>
+        </tr>
+    }
+</table>
            
-   <div class="pager ">
-        @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index",
-    new { page = x,category = Model.CurrentCategory}))
-   </div>
+<div class="pager ">
+    @Html.PageLinks(Model.PagingInfo, x =>
+    {
+        if (String.IsNullOrEmpty(Model.CurrentCategory))
+            return Url.Action("Index", new
+            {
+                page = x
+            });
+        return
+            Url.Action("Index", new
+            {
+                page = x,
+                category = Model.CurrentCategory
+            });
+    }
+        )
+</div>
       

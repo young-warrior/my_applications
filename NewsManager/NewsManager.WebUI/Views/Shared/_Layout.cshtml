@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width" />
     <link href="~/Content/Site.css" type="text/css" rel="stylesheet" />
     <body>
+        
         <div id="header">
             <div class="title">@ViewBag.Title</div>
-        </div>
 
+        </div>
         <div id="categories">
             @{ Html.RenderAction("Menu", "Nav"); }
-
+               
         </div>
+
         <div id="content">
             @RenderBody()
 

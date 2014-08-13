@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace NewsManager.WebUI
@@ -23,19 +19,12 @@ namespace NewsManager.WebUI
             page = 1
         }
       );
-
-
-            routes.MapRoute(
-         null,
+        routes.MapRoute(null,
        "Page{page}",
         new { Controller = "News", action = "Index",caregory =(string)null },
         new {page = @"\d+"}
       );
-            //routes.MapRoute(
-            //    name: "Default",
-            //    url: "{controller}/{action}/{id}",
-            //    defaults: new { controller = "News", action = "Index", id = UrlParameter.Optional }
-            //);
+        
             routes.MapRoute(null,
             "{category}",
             new { controller = "News", action = "Index", page = 1 }
