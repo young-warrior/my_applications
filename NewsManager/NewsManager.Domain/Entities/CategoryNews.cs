@@ -10,6 +10,7 @@ namespace NewsManager.Domain.Entities
         public int CategoryNewsID { get; set; }
 
         [Display(Name = "Category")]
+        [Required(ErrorMessage = "Please enter a Category")]
         public String Name { get; set; }
     }
 }

@@ -18,8 +18,8 @@ namespace NewsManager.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NewsID { get; set; }
         
-        [StringLength(1000)]
-        [DataType(DataType.MultilineText)]
+        [StringLength(200)]
+        [DataType(DataType.Text)]
         [Required(ErrorMessage = "Please enter a Title")]
         public string Title { get; set; }
         
@@ -33,7 +33,7 @@ namespace NewsManager.Domain.Entities
         
         [StringLength(Int32.MaxValue)]
         public string BodyNews { get; set; }
-
+        
         public NewsStatusType Status { get; set; }
 
         public virtual CategoryNews Category { get; set; }

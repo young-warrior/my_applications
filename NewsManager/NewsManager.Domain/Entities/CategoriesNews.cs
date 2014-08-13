@@ -9,7 +9,7 @@ namespace NewsManager.Domain.Entities
     public enum CategoriesNews
     {
         SPORT,
-        NEWS,
+        NEWS_WORLD,
         WEATHER
     }
 }
