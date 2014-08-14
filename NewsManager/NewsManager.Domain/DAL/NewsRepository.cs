@@ -2,6 +2,7 @@
 using System.Linq;
 using NewsManager.Domain.Abstract;
 using NewsManager.Domain.Entities;
+using NewsManager.Domain.DAL;
 
 namespace NewsManager.Domain.DAL
 {
