@@ -55,7 +55,6 @@
     <Compile Include="DAL\NewsInitializer.cs" />
     <Compile Include="Entities\CategoriesNews.cs" />
     <Compile Include="Entities\CategoryNews.cs" />
-    <Compile Include="Entities\INews.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\NewsStatusType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

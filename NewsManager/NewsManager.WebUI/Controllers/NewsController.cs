@@ -13,71 +13,41 @@ namespace NewsManager.WebUI.Controllers
 
     public class NewsController : Controller
     {
-        private readonly INewsRepository _repo;
+        private readonly INewsRepository repo;
         public int PageSize = 5;
 
         public NewsController()
         {
-            _repo = new NewsRepository();
+            this.repo = new NewsRepository();
         }
+
+        #region Actions
 
         // GET: News
         public ActionResult Index(string searchString, string sortOrder, string category, int page)
         {
             // gets news by category
-            IQueryable<News> entities = _repo.NewsEntities
-                .Include(x=>x.Category)
-                .Where(p => string.IsNullOrEmpty(category) 
-                    || (p.Category != null && p.Category.Name == category))
-                .OrderBy(p => p.NewsID)
-                .Skip((page - 1)*PageSize)
-                .Take(PageSize);
+            IQueryable<News> query = GetEntities(category, page);
             
-            var model = new NewsModel
+            query = this.ApplySorting(query, sortOrder);
+            query = this.ApplyFilter(query, searchString);
+
+            SetFilterParameters(sortOrder);
+
+            var model = new NewsListModel
             {
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = category == null
-                        ? _repo.NewsEntities.Count()
-                        : _repo.NewsEntities.Include(x => x.Category).Count(e => e.Category != null 
-                            && e.Category.Name == category)
+                    TotalItems = GetNewsTotalCount(category)
                 },
-                CurrentCategory = category
+                CurrentCategory = category,
+                Entities = query.ToList()
             };
-            //            filter order by Title, CreatesDate
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
-            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
-
-            IQueryable<News> query = entities;
-            
-            switch (sortOrder)
-            {
-                case "Title":
-                    query = query.OrderByDescending(s => s.Title);
-                    break;
-                case "CreateDate":
-                    query = query.OrderBy(s => s.CreatedDate);
-                    break;
-                case "Date":
-                    query = query.OrderByDescending(s => s.CreatedDate);
-                    break;
-                default:
-                    query = query.OrderBy(s => s.Title);
-                    break;
-            }
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                query = query.Where(s => s.Title.Contains(searchString));
-            }
-
-            model.Entities = query.ToList();
 
             return View(model);
         }
-
 
         //GET: News/Details/5
         public ActionResult Details(int? id)
@@ -87,7 +57,7 @@ namespace NewsManager.WebUI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            News news = _repo.FindById(id.Value);
+            News news = this.repo.FindById(id.Value);
             if (news == null)
             {
                 return HttpNotFound();
@@ -110,7 +80,7 @@ namespace NewsManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repo.Add(news);
+                this.repo.Add(news);
                 return RedirectToAction("Index");
             }
 
@@ -124,7 +94,7 @@ namespace NewsManager.WebUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            News news = _repo.FindById(id.Value);
+            News news = this.repo.FindById(id.Value);
             if (news == null)
             {
                 return HttpNotFound();
@@ -137,12 +107,11 @@ namespace NewsManager.WebUI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-//        public ActionResult Edit([Bind(Include = "NewsID,Title,BodyNews,Status,Category")] News news)
         public ActionResult Edit(News news)
         {
             if (ModelState.IsValid)
             {
-                _repo.Update(news);
+                this.repo.Update(news);
                 return RedirectToAction("Index");
             }
             return View(news);
@@ -157,13 +126,13 @@ namespace NewsManager.WebUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            News news = _repo.FindById(id.Value);
+            News news = this.repo.FindById(id.Value);
             if (news == null)
             {
                 return HttpNotFound();
             }
 
-            _repo.Delete(id.Value);
+            this.repo.Delete(id.Value);
             
             return new JsonResult()
                        {
@@ -172,5 +141,68 @@ namespace NewsManager.WebUI.Controllers
                            }
                        };
         }
+
+        #endregion 
+
+        #region Business Logic
+
+        private int GetNewsTotalCount(string category)
+        {
+            return category == null
+                ? this.repo.NewsEntities.Count()
+                : this.repo.NewsEntities.Include(x => x.Category)
+                    .Count(e => e.Category != null && e.Category.Name == category);
+        }
+
+        private void SetFilterParameters(string sortOrder)
+        {
+            // Prepare filter parameter for Title, CreatesDate
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
+            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
+        }
+
+        private IQueryable<News> ApplyFilter(IQueryable<News> query, string searchString)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(s => s.Title.Contains(searchString));
+            }
+
+            return query;
+        }
+
+        private IQueryable<News> ApplySorting(IQueryable<News> query, string sortOrder)
+        {
+            switch (sortOrder)
+            {
+                case "Title":
+                    query = query.OrderByDescending(s => s.Title);
+                    break;
+                case "CreateDate":
+                    query = query.OrderBy(s => s.CreatedDate);
+                    break;
+                case "Date":
+                    query = query.OrderByDescending(s => s.CreatedDate);
+                    break;
+                default:
+                    query = query.OrderBy(s => s.Title);
+                    break;
+            }
+
+            return query;
+        }
+
+        private IQueryable<News> GetEntities(String category, int page)
+        {
+            return this.repo.NewsEntities
+               .Include(x => x.Category)
+               .Where(p => string.IsNullOrEmpty(category)
+                   || (p.Category != null && p.Category.Name == category))
+               .OrderBy(p => p.NewsID)
+               .Skip((page - 1) * PageSize)
+               .Take(PageSize);
+        }
+
+        #endregion
     }
 }

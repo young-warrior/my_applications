@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NewsManager.Domain.Entities
 {
-    public class News : INews
+    public class News
     {
         public News()
         {
@@ -18,20 +18,10 @@ namespace NewsManager.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NewsID { get; set; }
         
-        [StringLength(200)]
-        [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Please enter a Title")]
         public string Title { get; set; }
         
-        [DataType(DataType.Time)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedDate { get; set; }
-
-        [Display(Name = "Input field")]
-        [Required(ErrorMessage = "Please enter a News")]
-        [DataType(DataType.MultilineText)]
         
-        [StringLength(Int32.MaxValue)]
         public string BodyNews { get; set; }
         
         public NewsStatusType Status { get; set; }

@@ -152,8 +152,9 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
-    <Compile Include="Models\NewsEntityModel.cs" />
+    <Compile Include="Models\CategoryNewsModel.cs" />
     <Compile Include="Models\NewsModel.cs" />
+    <Compile Include="Models\NewsListModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
