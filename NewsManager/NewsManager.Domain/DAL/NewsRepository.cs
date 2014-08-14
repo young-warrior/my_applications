@@ -11,7 +11,7 @@ namespace NewsManager.Domain.DAL
         public IQueryable<News> NewsEntities {
             get { return _context.News; }
         }
-
+        z
         public News Update(News news)
         {
             News dbEntity = this.FindById(news.NewsID);
@@ -35,6 +35,7 @@ namespace NewsManager.Domain.DAL
         public CategoryNews FindCateoryByName(String cateogry)
         {
             return _context.CategoriesNews.SingleOrDefault(x => x.Name == cateogry);
+            
         }
 
         public void Delete(int id)

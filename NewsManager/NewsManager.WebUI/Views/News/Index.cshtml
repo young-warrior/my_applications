@@ -1,5 +1,5 @@
-﻿@using NewsManager.Domain.Entities
-@model NewsManager.WebUI.Models.NewsModel
+﻿@using NewsManager.WebUI.Models
+@model NewsListModel
 
 @{
     ViewBag.Title = "NEWS MANAGER";
@@ -18,7 +18,7 @@
                 dataType: "json",
             });
         }
-         
+
         return true;
     }
 </script>
@@ -58,7 +58,7 @@
         </th>
     </tr>
 
-    @foreach (News item in Model.Entities)
+    @foreach (NewsModel item in Model.Entities)
     {
         <tr>
             <td>
@@ -84,10 +84,10 @@
                     "Delete",
                     "Index",
                     null,
-                 new
-                 {
-                     onclick = String.Format("return deleleNews('{0}', {1});",
-                        string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID)
+                    new
+                    {
+                        onclick = String.Format("return deleleNews('{0}', {1});",
+                            string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID)
                     })
             </td>
         </tr>

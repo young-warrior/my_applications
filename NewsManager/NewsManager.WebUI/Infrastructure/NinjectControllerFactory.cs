@@ -46,6 +46,7 @@ namespace NewsManager.WebUI.Infrastructure
             
 //            ninjectKernel.Bind<INewsRepository>().ToConstant(mock.Object);
             ninjectKernel.Bind<INewsRepository>().To<NewsRepository>();
+            ninjectKernel.Bind<ICategoryNewsRepository>().To<CategoryNewsRepository>();
         }
         
     }

@@ -1,0 +1,56 @@
+﻿@using NewsManager.WebUI.Models
+
+@model CategoriesNewListModel
+@{
+    ViewBag.Title = "List of Categories";
+}
+
+<tr>
+    <p>@Html.ActionLink("Add a new Categories", "Create")</p>
+</tr>
+
+<tr>
+    
+    <th>
+        Categories
+    </th>
+    <th>
+        Create Date
+    </th>
+    <th colspan="3">
+        Actions
+    </th>
+</tr>
+<table>
+    @foreach (NewsModel item in Model.Entities)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.NewsID})
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new {id = item.NewsID})
+            </td>
+            <td>
+                @Html.ActionLink(
+                    "Delete",
+                    "List",
+                    null,
+                    new
+                    {
+                        onclick = String.Format("return deleleNews('{0}', {1});",
+                            string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID)
+                    })
+            </td>
+        </tr>
+    }
+</table>
+
+
+

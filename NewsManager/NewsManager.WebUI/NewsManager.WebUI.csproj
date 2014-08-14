@@ -145,6 +145,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -152,8 +153,11 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
-    <Compile Include="Models\NewsEntityModel.cs" />
+    <Compile Include="Models\CategoriesModel.cs" />
+    <Compile Include="Models\CategoriesNewListModel.cs" />
+    <Compile Include="Models\CategoryNewsModel.cs" />
     <Compile Include="Models\NewsModel.cs" />
+    <Compile Include="Models\NewsListModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -254,16 +258,17 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\News\List.cshtml" />
     <Content Include="Views\News\Create.cshtml" />
-    <Content Include="Views\News\Delete.cshtml" />
-    <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
+    <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\Categories\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Caterories\" />
+    <Folder Include="Views\DrobDown\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

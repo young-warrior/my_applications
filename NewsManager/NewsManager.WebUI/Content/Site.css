@@ -72,6 +72,18 @@ DIV.pager A
     {
        border-width: 0px; 
     }
+    div.form-horizontal 
+   {
+       font: bold 1.1em "Arial Narrow"
+   }
+   
+  #Category_Name, #Title {
+      width: 400px;height: 20px;
+  }
+  textarea {
+      width: 400px;
+  }
   
+
 
   

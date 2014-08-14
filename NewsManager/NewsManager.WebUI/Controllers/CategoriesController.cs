@@ -10,30 +10,27 @@ using NewsManager.WebUI.Models;
 
 namespace NewsManager.WebUI.Controllers
 {
-    public class NewsController : Controller
+    public class CategoriesController : Controller
     {
         private readonly INewsRepository repo;
         public int PageSize = 5;
 
-        public NewsController()
+        public CategoriesController()
         {
             repo = new NewsRepository();
         }
 
+        // GET: Categories/List
+
         #region Actions
 
         // GET: News
-        public ActionResult Index(string searchString, string sortOrder, string category, int page)
+        public ActionResult List (string category, int page = 1)
         {
             // gets news by category
             IQueryable<News> query = GetEntities(category, page);
 
-            query = ApplySorting(query, sortOrder);
-            query = ApplyFilter(query, searchString);
-
-            SetFilterParameters(sortOrder);
-
-            var model = new NewsListModel
+            var model = new CategoriesNewListModel
             {
                 PagingInfo = new PagingInfo
                 {
@@ -81,7 +78,7 @@ namespace NewsManager.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 repo.Add(ConvertModelToEntity(news));
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
 
             return View(news);
@@ -113,7 +110,7 @@ namespace NewsManager.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 repo.Update(ConvertModelToEntity(model));
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
             return View(model);
         }
@@ -208,43 +205,6 @@ namespace NewsManager.WebUI.Controllers
                     .Count(e => e.Category != null && e.Category.Name == category);
         }
 
-        private void SetFilterParameters(string sortOrder)
-        {
-            // Prepare filter parameter for Title, CreatesDate
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
-            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
-        }
-
-        private IQueryable<News> ApplyFilter(IQueryable<News> query, string searchString)
-        {
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                query = query.Where(s => s.Title.Contains(searchString));
-            }
-
-            return query;
-        }
-
-        private IQueryable<News> ApplySorting(IQueryable<News> query, string sortOrder)
-        {
-            switch (sortOrder)
-            {
-                case "Title":
-                    query = query.OrderByDescending(s => s.Title);
-                    break;
-                case "CreateDate":
-                    query = query.OrderBy(s => s.CreatedDate);
-                    break;
-                case "Date":
-                    query = query.OrderByDescending(s => s.CreatedDate);
-                    break;
-                default:
-                    query = query.OrderBy(s => s.Title);
-                    break;
-            }
-
-            return query;
-        }
 
         private IQueryable<News> GetEntities(String category, int page)
         {
@@ -260,3 +220,6 @@ namespace NewsManager.WebUI.Controllers
         #endregion
     }
 }
+
+
+    

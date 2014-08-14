@@ -20,7 +20,7 @@
                                        BodyNews = "BODY NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNews.SPORT.ToString() },
+                                            { Name = CategoriesNewsTestKeys.SPORT.ToString() },
                     Status = NewsStatusType.active
                                    },
                                new News
@@ -31,7 +31,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNews.WEATHER.ToString() },
+                                            { Name = CategoriesNewsTestKeys.WEATHER.ToString() },
                     Status = NewsStatusType.inactive
                                    },
                                    new News
@@ -42,7 +42,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNews.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
                     Status = NewsStatusType.inactive
                                    },
                                    new News
@@ -53,7 +53,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNews.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
                     Status = NewsStatusType.inactive
                                    },
                                    new News
@@ -64,7 +64,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNews.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
                     Status = NewsStatusType.inactive
                                    },
                                    new News
@@ -75,7 +75,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNews.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
                     Status = NewsStatusType.inactive
                                    }
                            };
@@ -84,5 +84,12 @@
 
             //base.Seed(context);
         }
+    }
+
+    public enum CategoriesNewsTestKeys
+    {
+        SPORT ,
+        NEWS_WORLD,
+        WEATHER
     }
 }
