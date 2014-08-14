@@ -20,7 +20,7 @@ namespace NewsManager.Domain.DAL
             {
                 dbEntity.Title = news.Title;
                 dbEntity.BodyNews = news.BodyNews;
-                dbEntity.Category = news.Category;
+                dbEntity.Category = this.FindCategoryById(news.Category.CategoryNewsID);
                 dbEntity.Status = news.Status;
             }
 
@@ -33,10 +33,16 @@ namespace NewsManager.Domain.DAL
             return _context.News.Find(id);
         }
 
-        public CategoryNews FindCateoryByName(String cateogry)
+        public CategoryNews FindCategoryByName(String cateogry)
         {
             return _context.CategoriesNews.SingleOrDefault(x => x.Name == cateogry);
             
+        }
+
+        public CategoryNews FindCategoryById(int cateogryId)
+        {
+            return _context.CategoriesNews
+                .SingleOrDefault(x => x.CategoryNewsID == cateogryId);
         }
 
         public void Delete(int id)
@@ -54,7 +60,7 @@ namespace NewsManager.Domain.DAL
             if (news != null)
             {
                // Sets "Created date" on initial create
-                var category = this.FindCateoryByName(news.Category.Name);
+                var category = this.FindCategoryById(news.Category.CategoryNewsID);
                 if (category == null)
                 {
                     news.Category = _context.CategoriesNews.Add(new CategoryNews()

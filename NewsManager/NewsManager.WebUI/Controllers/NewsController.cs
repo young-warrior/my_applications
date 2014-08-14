@@ -10,14 +10,21 @@ using NewsManager.WebUI.Models;
 
 namespace NewsManager.WebUI.Controllers
 {
+    using System.Collections.Generic;
+    using System.Web.WebPages.Html;
+
+    using SelectListItem = System.Web.Mvc.SelectListItem;
+
     public class NewsController : Controller
     {
         private readonly INewsRepository repo;
+        private readonly ICategoryNewsRepository categoryRepo;
         public int PageSize = 5;
 
         public NewsController()
         {
             repo = new NewsRepository();
+            categoryRepo = new CategoryNewsRepository();
         }
 
         #region Actions
@@ -32,6 +39,7 @@ namespace NewsManager.WebUI.Controllers
             query = ApplyFilter(query, searchString);
 
             SetFilterParameters(sortOrder);
+
 
             var model = new NewsListModel
             {
@@ -62,13 +70,18 @@ namespace NewsManager.WebUI.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(ConvertEntityToModel(news));
         }
 
         // GET: News/Create
         public ActionResult Create()
         {
-            return View("Edit", new NewsModel());
+            return View("Edit", new NewsModel()
+                                    {
+                                        CategoryID = 0,
+                                        Categories = this.GetCategories()
+                                    });
         }
 
         // POST: News/Create
@@ -100,11 +113,32 @@ namespace NewsManager.WebUI.Controllers
                 return HttpNotFound();
             }
 
-            return View(ConvertEntityToModel(news));
+            
+            var model = ConvertEntityToModel(news);
+            model.Categories = this.GetCategories();
+
+            return View(model);
+        }
+
+        private IEnumerable<SelectListItem> GetCategories()
+        {
+            var categories = categoryRepo.CategoryNewsEntities.Select(c => new SelectListItem
+            {
+                Value = c.CategoryNewsID.ToString(),
+                Text = c.Name
+
+            }).ToList();
+            categories.Add(new SelectListItem()
+                               {
+                                   Text = "-- None --",
+                                   Value = 0.ToString()
+                               });
+
+            return categories;
         }
 
         // POST: News/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -112,9 +146,13 @@ namespace NewsManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 repo.Update(ConvertModelToEntity(model));
                 return RedirectToAction("Index");
             }
+
+            model.Categories = this.GetCategories();
+            
             return View(model);
         }
 
@@ -156,9 +194,12 @@ namespace NewsManager.WebUI.Controllers
             news.Title = model.Title;
             news.Status = model.Status;
 
-            if (model.Category != null)
+            if (model.CategoryID != null)
             {
-                news.Category = ConvertCategoryModelToEntity(model.Category);
+                news.Category = new CategoryNews()
+                                    {
+                                        CategoryNewsID = model.CategoryID
+                                    };
             }
 
             return news;
@@ -175,7 +216,8 @@ namespace NewsManager.WebUI.Controllers
 
             if (news.Category != null)
             {
-                model.Category = ConvertCategoryEntityToModel(news.Category);
+                model.CategoryID = news.Category.CategoryNewsID;
+                model.Category = this.ConvertCategoryEntityToModel(news.Category);
             }
 
             return model;

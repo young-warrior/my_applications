@@ -1,9 +1,13 @@
 ﻿namespace NewsManager.WebUI.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.WebPages.Html;
 
     using NewsManager.Domain.Entities;
+
+    using SelectListItem = System.Web.Mvc.SelectListItem;
 
     public class NewsModel  
     {
@@ -36,6 +40,12 @@
         
         public NewsStatusType Status { get; set; }
 
-        public virtual CategoryNewsModel Category { get; set; }
+        [Display(Name = "Category")]
+        public int CategoryID { get; set; }
+
+        public IEnumerable<SelectListItem> Categories { get; set; }
+
+        [Display(Name = "Category")]
+        public CategoryNewsModel Category { get; set; }
     }
 }
