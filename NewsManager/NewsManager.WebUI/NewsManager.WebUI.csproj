@@ -145,6 +145,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -260,9 +261,11 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
     <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\Categories\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Caterories\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

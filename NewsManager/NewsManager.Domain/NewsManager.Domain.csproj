@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\INewsRepository.cs" />
+    <Compile Include="DAL\CategoryNewsRepository.cs" />
+    <Compile Include="DAL\ICategoryNewsRepository.cs" />
     <Compile Include="DAL\NewsRepository.cs" />
     <Compile Include="DAL\DBContext.cs" />
     <Compile Include="DAL\NewsInitializer.cs" />
