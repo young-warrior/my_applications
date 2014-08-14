@@ -41,7 +41,7 @@
         public NewsStatusType Status { get; set; }
 
         [Display(Name = "Category")]
-        public int CategoryID { get; set; }
+        public int? CategoryID { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
 

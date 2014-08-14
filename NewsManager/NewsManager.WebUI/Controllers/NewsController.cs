@@ -79,7 +79,7 @@ namespace NewsManager.WebUI.Controllers
         {
             return View("Edit", new NewsModel()
                                     {
-                                        CategoryID = 0,
+                                        CategoryID =  null,
                                         Categories = this.GetCategories()
                                     });
         }
@@ -122,18 +122,21 @@ namespace NewsManager.WebUI.Controllers
 
         private IEnumerable<SelectListItem> GetCategories()
         {
-            var categories = categoryRepo.CategoryNewsEntities.Select(c => new SelectListItem
+            var categories = new List<SelectListItem>();
+            categories.Add(new SelectListItem()
+            {
+                Text = "-- None --",
+                Value = null
+            });
+
+
+            categories.AddRange(categoryRepo.CategoryNewsEntities.Select(c => new SelectListItem
             {
                 Value = c.CategoryNewsID.ToString(),
                 Text = c.Name
 
-            }).ToList();
-            categories.Add(new SelectListItem()
-                               {
-                                   Text = "-- None --",
-                                   Value = 0.ToString()
-                               });
-
+            }).ToList());
+            
             return categories;
         }
 
@@ -198,7 +201,7 @@ namespace NewsManager.WebUI.Controllers
             {
                 news.Category = new CategoryNews()
                                     {
-                                        CategoryNewsID = model.CategoryID
+                                        CategoryNewsID = model.CategoryID.Value
                                     };
             }
 
