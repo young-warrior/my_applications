@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
-using NewsManager.Domain.Abstract;
 using NewsManager.Domain.DAL;
 using NewsManager.Domain.Entities;
 using NewsManager.WebUI.Models;
@@ -12,12 +10,12 @@ namespace NewsManager.WebUI.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly INewsRepository repo;
+        private readonly ICategoryNewsRepository repo;
         public int PageSize = 5;
 
         public CategoriesController()
         {
-            repo = new NewsRepository();
+            repo = new CategoryNewsRepository();
         }
 
         // GET: Categories/List
@@ -25,10 +23,10 @@ namespace NewsManager.WebUI.Controllers
         #region Actions
 
         // GET: News
-        public ActionResult List (string category, int page = 1)
+        public ActionResult List( int page = 1)
         {
             // gets news by category
-            IQueryable<News> query = GetEntities(category, page);
+            IQueryable<CategoryNews> query = GetEntities(page);
 
             var model = new CategoriesNewListModel
             {
@@ -36,9 +34,8 @@ namespace NewsManager.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = GetNewsTotalCount(category)
+                    TotalItems = GetNewsTotalCount()
                 },
-                CurrentCategory = category,
                 Entities = query.ToList().Select(x => ConvertEntityToModel(x)).ToList()
             };
 
@@ -46,134 +43,26 @@ namespace NewsManager.WebUI.Controllers
             return View(model);
         }
 
-        //GET: News/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            News news = repo.FindById(id.Value);
-            if (news == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ConvertEntityToModel(news));
-        }
-
-        // GET: News/Create
-        public ActionResult Create()
-        {
-            return View("Edit", new NewsModel());
-        }
-
-        // POST: News/Create
-        // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(NewsModel news)
-        {
-            if (ModelState.IsValid)
-            {
-                repo.Add(ConvertModelToEntity(news));
-                return RedirectToAction("List");
-            }
-
-            return View(news);
-        }
-
-        // GET: News/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            News news = repo.FindById(id.Value);
-            if (news == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(ConvertEntityToModel(news));
-        }
-
-        // POST: News/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(NewsModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                repo.Update(ConvertModelToEntity(model));
-                return RedirectToAction("List");
-            }
-            return View(model);
-        }
-
-        // POST: News/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            News news = repo.FindById(id.Value);
-            if (news == null)
-            {
-                return HttpNotFound();
-            }
-
-            repo.Delete(id.Value);
-
-            return new JsonResult
-            {
-                Data = new
-                {
-                    deleted = true
-                }
-            };
-        }
-
         #endregion
 
         #region Business Logic
 
-        private News ConvertModelToEntity(NewsModel model)
+        //private News ConvertModelToEntity(CategoryNewsModel model)
+        //{
+        //    var news = new CategoryNewsModel();
+
+           
+        //        news.CategoryNewsID = ConvertCategoryModelToEntity(model.Category);
+           
+
+        //    return news;
+        //}
+
+        private CategoryNewsModel ConvertEntityToModel(CategoryNews category)
         {
-            var news = new News();
-
-            news.NewsID = model.NewsID;
-            news.BodyNews = model.BodyNews;
-            news.Title = model.Title;
-            news.Status = model.Status;
-
-            if (model.Category != null)
-            {
-                news.Category = ConvertCategoryModelToEntity(model.Category);
-            }
-
-            return news;
-        }
-
-        private NewsModel ConvertEntityToModel(News news)
-        {
-            var model = new NewsModel();
-
-            model.NewsID = news.NewsID;
-            model.BodyNews = news.BodyNews;
-            model.Title = news.Title;
-            model.Status = news.Status;
-
-            if (news.Category != null)
-            {
-                model.Category = ConvertCategoryEntityToModel(news.Category);
-            }
+            var model = new CategoryNewsModel();
+            model.CategoryNewsID = category.CategoryNewsID;
+            model.Name = category.Name;
 
             return model;
         }
@@ -197,22 +86,16 @@ namespace NewsManager.WebUI.Controllers
             };
         }
 
-        private int GetNewsTotalCount(string category)
+        private int GetNewsTotalCount()
         {
-            return category == null
-                ? repo.NewsEntities.Count()
-                : repo.NewsEntities.Include(x => x.Category)
-                    .Count(e => e.Category != null && e.Category.Name == category);
+            return repo.CategoryNewsEntities.Count();
         }
 
 
-        private IQueryable<News> GetEntities(String category, int page)
+        private IQueryable<CategoryNews> GetEntities(int page)
         {
-            return repo.NewsEntities
-                .Include(x => x.Category)
-                .Where(p => string.IsNullOrEmpty(category)
-                            || (p.Category != null && p.Category.Name == category))
-                .OrderBy(p => p.NewsID)
+            return repo.CategoryNewsEntities
+                .OrderBy(p => p.CategoryNewsID)
                 .Skip((page - 1)*PageSize)
                 .Take(PageSize);
         }

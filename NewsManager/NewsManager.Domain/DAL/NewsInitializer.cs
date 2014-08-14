@@ -53,7 +53,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString()+1 },
                     Status = NewsStatusType.inactive
                                    },
                                    new News
@@ -64,7 +64,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString()+2 },
                     Status = NewsStatusType.inactive
                                    },
                                    new News
@@ -75,7 +75,7 @@
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
-                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString() },
+                                            { Name = CategoriesNewsTestKeys.NEWS_WORLD.ToString()+3 },
                     Status = NewsStatusType.inactive
                                    }
                            };

@@ -11,7 +11,7 @@ namespace NewsManager.Domain.DAL
         public IQueryable<News> NewsEntities {
             get { return _context.News; }
         }
-        z
+        
         public News Update(News news)
         {
             News dbEntity = this.FindById(news.NewsID);
