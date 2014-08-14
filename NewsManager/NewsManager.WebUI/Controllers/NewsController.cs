@@ -43,7 +43,7 @@ namespace NewsManager.WebUI.Controllers
                     TotalItems = GetNewsTotalCount(category)
                 },
                 CurrentCategory = category,
-                Entities = query.ToList()
+                Entities = query.ToList().Select(x=> this.ConvertEntityToModel(x)).ToList()
             };
 
             return View(model);
@@ -62,25 +62,25 @@ namespace NewsManager.WebUI.Controllers
             {
                 return HttpNotFound();
             }
-            return View(news);
+            return View(this.ConvertEntityToModel(news));
         }
 
         // GET: News/Create
         public ActionResult Create()
         {
-            return View("Edit", new News());
+            return View("Edit", new NewsModel());
         }
 
         // POST: News/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(News news)
+        public ActionResult Create(NewsModel news)
         {
             if (ModelState.IsValid)
             {
-                this.repo.Add(news);
+                this.repo.Add(this.ConvertModelToEntity(news));
                 return RedirectToAction("Index");
             }
 
@@ -99,7 +99,7 @@ namespace NewsManager.WebUI.Controllers
             {
                 return HttpNotFound();
             }
-            return View(news);
+            return View(this.ConvertEntityToModel(news));
         }
 
         // POST: News/Edit/5
@@ -107,17 +107,16 @@ namespace NewsManager.WebUI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(News news)
+        public ActionResult Edit(NewsModel model)
         {
             if (ModelState.IsValid)
             {
-                this.repo.Update(news);
+                this.repo.Update(ConvertModelToEntity(model));
                 return RedirectToAction("Index");
             }
-            return View(news);
+            return View(model);
         }
-
-
+        
         // POST: News/Delete/5
         [HttpPost]
         public ActionResult Delete(int? id)
@@ -145,6 +144,41 @@ namespace NewsManager.WebUI.Controllers
         #endregion 
 
         #region Business Logic
+        private News ConvertModelToEntity(NewsModel model)
+        {
+            News news = new News();
+            news.BodyNews = model.BodyNews;
+            
+            // TODO: Complete this method.
+
+            if (model.Category != null)
+            {
+                news.Category = ConvertCategoryModelToEntity(model.Category);
+            }
+
+            return news;
+        }
+
+        // TODO: Complete this method.
+
+        private NewsModel ConvertEntityToModel(News news)
+        {
+            NewsModel model = new NewsModel();
+            model.BodyNews = news.BodyNews;
+            model.NewsID = news.NewsID;
+
+            return model;
+        }
+
+
+        private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
+        {
+            return new CategoryNews()
+                       {
+                           CategoryNewsID = category.CategoryNewsID,
+                           Name = category.Name
+                       };
+        }
 
         private int GetNewsTotalCount(string category)
         {

@@ -6,7 +6,7 @@
 
     public class NewsListModel
     {
-        public IList<News> Entities { get; set; }
+        public IList<NewsModel> Entities { get; set; }
 
         public PagingInfo PagingInfo { get; set; }
 

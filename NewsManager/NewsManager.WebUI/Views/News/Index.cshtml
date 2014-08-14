@@ -1,4 +1,5 @@
 ﻿@using NewsManager.Domain.Entities
+@using NewsManager.WebUI.Models
 @model NewsManager.WebUI.Models.NewsListModel
 
 @{
@@ -58,7 +59,7 @@
         </th>
     </tr>
 
-    @foreach (News item in Model.Entities)
+    @foreach (NewsModel item in Model.Entities)
     {
         <tr>
             <td>

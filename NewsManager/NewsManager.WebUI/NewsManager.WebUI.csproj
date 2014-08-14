@@ -255,13 +255,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\News\List.cshtml" />
     <Content Include="Views\News\Create.cshtml" />
-    <Content Include="Views\News\Delete.cshtml" />
-    <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
+    <Content Include="Views\News\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

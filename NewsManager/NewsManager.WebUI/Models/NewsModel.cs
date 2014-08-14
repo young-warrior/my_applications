@@ -36,6 +36,6 @@
         
         public NewsStatusType Status { get; set; }
 
-        public virtual CategoryNews Category { get; set; }
+        public virtual CategoryNewsModel Category { get; set; }
     }
 }
