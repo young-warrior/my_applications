@@ -168,3 +168,6 @@ public/v/index.html
 
 #merge output
 *.orig
+
+/NewsManager/NewsManager.WebUI/App_Data/NewsDB.mdf
+/NewsManager/NewsManager.WebUI/App_Data/NewsDB_log.ldf

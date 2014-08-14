@@ -88,7 +88,7 @@
 
     public enum CategoriesNewsTestKeys
     {
-        SPORT,
+        SPORT ,
         NEWS_WORLD,
         WEATHER
     }

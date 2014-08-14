@@ -266,6 +266,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Caterories\" />
+    <Folder Include="Views\DrobDown\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

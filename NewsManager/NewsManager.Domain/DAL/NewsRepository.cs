@@ -2,6 +2,7 @@
 using System.Linq;
 using NewsManager.Domain.Abstract;
 using NewsManager.Domain.Entities;
+using NewsManager.Domain.DAL;
 
 namespace NewsManager.Domain.DAL
 {
@@ -35,6 +36,7 @@ namespace NewsManager.Domain.DAL
         public CategoryNews FindCateoryByName(String cateogry)
         {
             return _context.CategoriesNews.SingleOrDefault(x => x.Name == cateogry);
+            
         }
 
         public void Delete(int id)

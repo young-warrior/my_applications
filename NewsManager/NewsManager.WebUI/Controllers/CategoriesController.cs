@@ -1,4 +1,6 @@
-﻿namespace NewsManager.WebUI.Controllers
+﻿using NewsManager.Domain.Abstract;
+
+namespace NewsManager.WebUI.Controllers
 {
     using System.Web.Mvc;
 
@@ -6,17 +8,19 @@
 
     public class CategoriesController : Controller
     {
-        private readonly ICategoryNewsRepository repo;
+        private readonly INewsRepository repo;
+        
 
-        public CategoriesController(ICategoryNewsRepository repo)
+        public CategoriesController()
         {
-            this.repo = repo;
+            repo = new NewsRepository();
         }
 
         // GET: Categories/List
-        public ActionResult List(int page = 1)
+        public ActionResult List()
         {
-            return this.View();
+            
+            return View();
         }
     }
 }
