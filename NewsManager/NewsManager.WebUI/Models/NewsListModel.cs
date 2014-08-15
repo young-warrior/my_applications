@@ -12,6 +12,6 @@ namespace NewsManager.WebUI.Models
 
         public IEnumerable<SelectListItem> CategoryID { get; set; }
 
-        public string CurrentCategory { get; set; }
+        public int? CurrentCategory { get; set; }
     }
 }

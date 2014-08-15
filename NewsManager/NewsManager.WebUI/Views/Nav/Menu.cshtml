@@ -1,12 +1,15 @@
-﻿@model IEnumerable<string>
+﻿@using NewsManager.WebUI.Models
+@model IEnumerable<NavigationModel>
     
 @Html.ActionLink("Categories", "List", "Categories")
 @Html.ActionLink("News", "Index", "News")
 
 <div style="margin-left: 10px">
-    @foreach (string link in Model)
+    @foreach (NavigationModel link in Model)
     {
-        @Html.RouteLink(link, new { controller = "News", action = "Index", category = link, page = 1 })
+        <div style="font-size: x-small">@Html.RouteLink(link.Title, 
+            new { controller = "News", action = "Index", category = link.CategoryId, page = 1 })</div>
+        
     }
 </div>
 

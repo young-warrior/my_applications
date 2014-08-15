@@ -98,7 +98,7 @@
 <div class="pager ">
     @Html.PageLinks(Model.PagingInfo, x =>
     {
-        if (String.IsNullOrEmpty(Model.CurrentCategory))
+        if (Model.CurrentCategory == null)
             return Url.Action("Index", new
             {
                 page = x

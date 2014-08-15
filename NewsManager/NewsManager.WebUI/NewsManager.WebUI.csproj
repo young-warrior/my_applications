@@ -156,6 +156,7 @@
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CategoriesNewListModel.cs" />
     <Compile Include="Models\CategoryNewsModel.cs" />
+    <Compile Include="Models\NavigationModel.cs" />
     <Compile Include="Models\NewsModel.cs" />
     <Compile Include="Models\NewsListModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />

@@ -30,9 +30,9 @@ namespace NewsManager.WebUI.Controllers
         #region Actions
 
         // GET: News
-        public ActionResult Index(string searchString, string sortOrder, string category, int page)
+        public ActionResult Index(string searchString, string sortOrder, int? category, int page)
         {
-            // gets news by category
+            // gets news by categoryId
             IQueryable<News> query = GetEntities(category, page);
 
             query = ApplySorting(query, sortOrder);
@@ -245,12 +245,12 @@ namespace NewsManager.WebUI.Controllers
             };
         }
 
-        private int GetNewsTotalCount(string category)
+        private int GetNewsTotalCount(int? categoryId)
         {
-            return category == null
+            return !categoryId.HasValue
                 ? repo.NewsEntities.Count()
                 : repo.NewsEntities.Include(x => x.Category)
-                    .Count(e => e.Category != null && e.Category.Name == category);
+                    .Count(e => e.Category != null && e.Category.CategoryNewsID == categoryId);
         }
 
         private void SetFilterParameters(string sortOrder)
@@ -291,12 +291,12 @@ namespace NewsManager.WebUI.Controllers
             return query;
         }
 
-        private IQueryable<News> GetEntities(String category, int page)
+        private IQueryable<News> GetEntities(int? category, int page)
         {
             return repo.NewsEntities
                 .Include(x => x.Category)
-                .Where(p => string.IsNullOrEmpty(category)
-                            || (p.Category != null && p.Category.Name == category))
+                .Where(p => category == null
+                            || (p.Category != null && p.Category.CategoryNewsID == category))
                 .OrderBy(p => p.NewsID)
                 .Skip((page - 1)*PageSize)
                 .Take(PageSize);

@@ -6,6 +6,7 @@
     using System.Web.Mvc;
 
     using NewsManager.Domain.Abstract;
+    using NewsManager.WebUI.Models;
 
     public class NavController : Controller
     {
@@ -19,12 +20,16 @@
         // GET: Nav
         public PartialViewResult Menu()
         {
-            IEnumerable<string> categories =
+            IEnumerable<NavigationModel> categories =
                 this.repository.NewsEntities.Include(x => x.Category)
                     .Where(x => x.Category != null)
-                    .Select(x => x.Category.Name)
+                    .Select(x => new NavigationModel()
+                                     {
+                                         Title = x.Category.Name,
+                                         CategoryId = x.Category.CategoryNewsID
+                                     } )
                     .Distinct()
-                    .OrderBy(x => x)
+                    .OrderBy(x => x.Title)
                     .ToList();
             return PartialView(categories);
         }

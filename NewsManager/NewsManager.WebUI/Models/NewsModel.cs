@@ -44,8 +44,7 @@
         public int? CategoryID { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
-
-        [Display(Name = "Category")]
+        
         public CategoryNewsModel Category { get; set; }
     }
 }
