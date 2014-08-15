@@ -264,11 +264,11 @@
     <Content Include="Views\Nav\Menu.cshtml" />
     <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\Categories\List.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Caterories\" />
-    <Folder Include="Views\DrobDown\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

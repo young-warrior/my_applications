@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using NewsManager.Domain.DAL;
@@ -11,7 +12,7 @@ namespace NewsManager.WebUI.Controllers
     public class CategoriesController : Controller
     {
         private readonly ICategoryNewsRepository repo;
-        public int PageSize = 5;
+        public int PageSize = 10;
 
         public CategoriesController()
         {
@@ -68,12 +69,13 @@ namespace NewsManager.WebUI.Controllers
         }
 
 
-        private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
+        private CategoryNews ConvertCategoryModelToEntity(CategoriesModel category)
         {
             return new CategoryNews
             {
-                CategoryNewsID = category.CategoryNewsID,
-                Name = category.Name
+                CategoryNewsID = category.Category.CategoryNewsID,
+                Name = category.Category.Name
+                
             };
         }
 
@@ -85,7 +87,7 @@ namespace NewsManager.WebUI.Controllers
                 Name = category.Name
             };
         }
-
+//
         private int GetNewsTotalCount()
         {
             return repo.CategoryNewsEntities.Count();
@@ -100,7 +102,84 @@ namespace NewsManager.WebUI.Controllers
                 .Take(PageSize);
         }
 
-        #endregion
+        
+        public ActionResult Create()
+        {
+            return View("Edit", new CategoriesModel());
+        }
+
+        // POST: Category/Create
+        // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CategoriesModel category)
+        {
+            if (ModelState.IsValid)
+            {
+                repo.Add(ConvertCategoryModelToEntity(category));
+                return RedirectToAction("List");
+            }
+
+            return View(category);
+        }
+
+        // GET: News/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CategoryNews category = repo.FindById(id.Value);
+            if (category == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(ConvertCategoryEntityToModel(category));
+        }
+
+        // POST: Catelog/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(CategoriesModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                repo.Update(ConvertCategoryModelToEntity(model));
+                return RedirectToAction("List");
+            }
+            return View(model);
+        }
+
+        // POST: Catalog/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CategoryNews news = repo.FindById(id.Value);
+            if (news == null)
+            {
+                return HttpNotFound();
+            }
+
+            repo.Delete(id.Value);
+
+            return new JsonResult
+            {
+                Data = new
+                {
+                    deleted = true
+                }
+            };
+        }
+#endregion
     }
 }
 
