@@ -23,6 +23,7 @@ DIV#header
   }
   DIV#content
 {
+      
   border-left: 2px solid gray;
   margin-left: 10em;
   padding: 1em;
@@ -83,7 +84,9 @@ DIV.pager A
   textarea {
       width: 400px;
   }
-  
+  table {
+      width: 100%;
+  }
 
 
   

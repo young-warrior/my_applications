@@ -38,15 +38,15 @@
             </p>
         } 
     </tr>
-    <tr>
+    <tr bgcolor="#cccccc">
         <th>
-                            
-            @Html.ActionLink("Title", "Index", new {sortOrder = ViewBag.NameSortParm, category = Model.CurrentCategory})
+
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, category = Model.CurrentCategory })
 
         </th>
         <th>
-            @Html.ActionLink("CreatedDate", "Index", new {sortOrder = ViewBag.DateSortParm, category = Model.CurrentCategory})
-                            
+            @Html.ActionLink("CreatedDate", "Index", new { sortOrder = ViewBag.DateSortParm, category = Model.CurrentCategory })
+
         </th>
         <th>
             Body News
@@ -54,7 +54,7 @@
         <th>
             Status
         </th>
-        <th>
+        <th colspan="3">
             Actions
         </th>
     </tr>

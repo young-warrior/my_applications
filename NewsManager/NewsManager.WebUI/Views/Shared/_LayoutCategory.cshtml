@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <link href="~/Content/Site.css" type="text/css" rel="stylesheet" />
     <body>
-        
+
         <div id="header">
             <div class="title">@ViewBag.Title</div>
 
@@ -13,7 +13,7 @@
         <div id="categories">
             @Html.ActionLink("HOME", "Start", "Home")
             @Html.ActionLink("NEW CATEGORY", "List", "Categories")
-            @{ Html.RenderAction("Menu", "Nav"); }
+            @Html.ActionLink("ALL NEWS", "Index", "News")
             @Html.ActionLink("ABOUT", "About", "Home")
         </div>
 
@@ -23,8 +23,7 @@
             @Scripts.Render("~/bundles/jquery")
             @RenderSection("scripts", required: false)
         </div>
-        
+
 
     </body>
 </html>
-
