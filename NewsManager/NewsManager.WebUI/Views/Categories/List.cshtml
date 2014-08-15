@@ -4,6 +4,31 @@
 @{
     ViewBag.Title = "List of Categories";
 }
+
+<script>
+    function deleleCategory(message, id) {
+
+        var serviceUrl = '/Categories/Delete?id=' + id;
+        if (confirm(message)) {
+            $.ajax({
+                type: "POST",
+                url: serviceUrl,
+                data: param = "",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                //error : errorFunc
+            });
+//
+//            function errorFunc(status, errorMessage) {
+//                console.log(status);
+//                alert(status + " " + errorMessage);
+//            }
+        }
+
+        return true;
+    }
+</script>
+
 <table>
     <tr>
         <p>@Html.ActionLink("Add a new Categories", "Create")</p>
@@ -35,8 +60,8 @@
                     null,
                     new
                     {
-                        onclick = String.Format("return deleleNews('{0}');",
-                            string.Format("Are you sure you wish to delete {0} news?", item.Name))
+                        onclick = String.Format("return deleleCategory('{0}', {1});",
+                            string.Format("Are you sure you wish to delete {0} category?", item.Name), item.CategoryNewsID)
                     })
             </td>
         </tr>

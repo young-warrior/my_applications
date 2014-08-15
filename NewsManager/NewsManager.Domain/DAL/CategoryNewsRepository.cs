@@ -39,14 +39,39 @@ namespace NewsManager.Domain.DAL
             return context.CategoriesNews.SingleOrDefault(x => x.Name == category);
 
         }
-
+        
+        //TODO: Fix {"The DELETE statement conflicted with the REFERENCE constraint \"FK_dbo.News_dbo.CategoryNews_Category_CategoryNewsID\". The conflict occurred in database \"NewsDB\", table \"dbo.News\", column 'Category_CategoryNewsID'.\r\nThe statement has been terminated."}
+        //Possible solution: Use soft delete
         public void Delete(int id)
         {
-            CategoryNews news = FindById(id);
-            if (news != null)
+            CategoryNews category = FindById(id);
+//            news.IsActive = false;
+//            this.Update(news);
+
+            if (category != null)
             {
-                context.CategoriesNews.Remove(news);
-                context.SaveChanges();
+                try
+                {
+                    context.CategoriesNews.Remove(category);
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                
+            }
+        }
+
+        public void AddOrUpdate(CategoryNews category)
+        {
+            if (category.CategoryNewsID == 0)
+            {
+                this.Add(category);
+            }
+            else
+            {
+                this.Update(category);
             }
         }
 

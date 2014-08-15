@@ -129,13 +129,12 @@ namespace NewsManager.WebUI.Controllers
                 Value = null
             });
 
-
             categories.AddRange(categoryRepo.CategoryNewsEntities.Select(c => new SelectListItem
             {
                 Value = c.CategoryNewsID.ToString(),
                 Text = c.Name
 
-            }).ToList());
+            }).OrderBy(x=>x.Text).ToList());
             
             return categories;
         }

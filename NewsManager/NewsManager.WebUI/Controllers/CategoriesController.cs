@@ -1,22 +1,22 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Web.Mvc;
-using NewsManager.Domain.DAL;
-using NewsManager.Domain.Entities;
-using NewsManager.WebUI.Models;
-
-namespace NewsManager.WebUI.Controllers
+﻿namespace NewsManager.WebUI.Controllers
 {
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+
+    using NewsManager.Domain.DAL;
+    using NewsManager.Domain.Entities;
+    using NewsManager.WebUI.Models;
+
     public class CategoriesController : Controller
     {
         private readonly ICategoryNewsRepository repo;
+
         public int PageSize = 10;
 
         public CategoriesController()
         {
-            repo = new CategoryNewsRepository();
+            this.repo = new CategoryNewsRepository();
         }
 
         // GET: Categories/List
@@ -24,22 +24,25 @@ namespace NewsManager.WebUI.Controllers
         #region Actions
 
         // GET: News
-        public ActionResult List( int page = 1)
+        public ActionResult List(int page = 1)
         {
             // gets news by category
-            IQueryable<CategoryNews> query = GetEntities(page);
+            IQueryable<CategoryNews> query = this.GetEntities(page);
 
             var model = new CategoriesNewListModel
-            {
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = GetNewsTotalCount()
-                },
-                Entities = query.ToList().Select(x => ConvertEntityToModel(x)).ToList()
-            };
-
+                            {
+                                PagingInfo =
+                                    new PagingInfo
+                                        {
+                                            CurrentPage = page,
+                                            ItemsPerPage = this.PageSize,
+                                            TotalItems = this.GetNewsTotalCount()
+                                        },
+                                Entities =
+                                    query.ToList()
+                                    .Select(x => this.ConvertEntityToModel(x))
+                                    .ToList()
+                            };
 
             return View(model);
         }
@@ -48,64 +51,43 @@ namespace NewsManager.WebUI.Controllers
 
         #region Business Logic
 
-        //private News ConvertModelToEntity(CategoryNewsModel model)
-        //{
-        //    var news = new CategoryNewsModel();
-
-           
-        //        news.CategoryNewsID = ConvertCategoryModelToEntity(model.Category);
-           
-
-        //    return news;
-        //}
-
         private CategoryNewsModel ConvertEntityToModel(CategoryNews category)
         {
-            var model = new CategoryNewsModel();
-            model.CategoryNewsID = category.CategoryNewsID;
-            model.Name = category.Name;
+            var model = new CategoryNewsModel
+                            {
+                                CategoryNewsID = category.CategoryNewsID, 
+                                Name = category.Name
+                            };
 
             return model;
         }
 
-
-        private CategoryNews ConvertCategoryModelToEntity(CategoriesModel category)
+        private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
         {
             return new CategoryNews
-            {
-                CategoryNewsID = category.Category.CategoryNewsID,
-                Name = category.Category.Name
-                
-            };
+                       {
+                           CategoryNewsID = category.CategoryNewsID, 
+                           Name = category.Name
+                       };
         }
 
-        private CategoryNewsModel ConvertCategoryEntityToModel(CategoryNews category)
-        {
-            return new CategoryNewsModel
-            {
-                CategoryNewsID = category.CategoryNewsID,
-                Name = category.Name
-            };
-        }
-//
         private int GetNewsTotalCount()
         {
-            return repo.CategoryNewsEntities.Count();
+            return this.repo.CategoryNewsEntities.Count();
         }
-
 
         private IQueryable<CategoryNews> GetEntities(int page)
         {
-            return repo.CategoryNewsEntities
-                .OrderBy(p => p.CategoryNewsID)
-                .Skip((page - 1)*PageSize)
-                .Take(PageSize);
+            return
+                this.repo.CategoryNewsEntities.OrderBy(p => p.Name)
+
+                    .Skip((page - 1) * this.PageSize)
+                    .Take(this.PageSize);
         }
 
-        
         public ActionResult Create()
         {
-            return View("Edit", new CategoriesModel());
+            return this.View("Edit", new CategoryNewsModel());
         }
 
         // POST: Category/Create
@@ -113,12 +95,12 @@ namespace NewsManager.WebUI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CategoriesModel category)
+        public ActionResult Create(CategoryNewsModel category)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                repo.Add(ConvertCategoryModelToEntity(category));
-                return RedirectToAction("List");
+                this.repo.Add(this.ConvertCategoryModelToEntity(category));
+                return this.RedirectToAction("List");
             }
 
             return View(category);
@@ -131,31 +113,31 @@ namespace NewsManager.WebUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CategoryNews category = repo.FindById(id.Value);
+            CategoryNews category = this.repo.FindById(id.Value);
             if (category == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            return View(ConvertCategoryEntityToModel(category));
+            return this.View(this.ConvertEntityToModel(category));
         }
 
-        // POST: Catelog/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // POST: Categories/Edit/5
+        // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CategoriesModel model)
+        public ActionResult Edit(CategoryNewsModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                repo.Update(ConvertCategoryModelToEntity(model));
-                return RedirectToAction("List");
+                this.repo.AddOrUpdate(this.ConvertCategoryModelToEntity(model));
+                return this.RedirectToAction("List");
             }
             return View(model);
         }
 
-        // POST: Catalog/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost]
         public ActionResult Delete(int? id)
         {
@@ -163,23 +145,18 @@ namespace NewsManager.WebUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CategoryNews news = repo.FindById(id.Value);
+            CategoryNews news = this.repo.FindById(id.Value);
             if (news == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            repo.Delete(id.Value);
+            this.repo.Delete(id.Value);
 
-            return new JsonResult
-            {
-                Data = new
-                {
-                    deleted = true
-                }
-            };
+            return new JsonResult { Data = new { deleted = true } };
         }
-#endregion
+
+        #endregion
     }
 }
 

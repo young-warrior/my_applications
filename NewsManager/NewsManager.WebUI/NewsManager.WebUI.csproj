@@ -153,7 +153,6 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
-    <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CategoriesNewListModel.cs" />
     <Compile Include="Models\CategoryNewsModel.cs" />
     <Compile Include="Models\NavigationModel.cs" />
@@ -259,7 +258,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\News\Create.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
