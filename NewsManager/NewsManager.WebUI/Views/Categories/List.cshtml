@@ -71,9 +71,24 @@
     @Html.ActionLink("Back to List", "Index", "News")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<div class="pager ">
+    @Html.PageLinks(Model.PagingInfo, x =>
+    {
+        if (Model.PagingInfo == null)
+            return Url.Action("List", new
+            {
+                page = x
+            });
+        return
+            Url.Action("List", new
+            {
+                page = x,
+                
+            });
+    }
+        )
+</div>
+      
 
 
 
