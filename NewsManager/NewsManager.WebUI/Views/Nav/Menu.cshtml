@@ -8,7 +8,8 @@
     @foreach (NavigationModel link in Model)
     {
         <div style="font-size: x-small">@Html.RouteLink(link.Title,
-                                            new {controller = "News", action = "Index", category = link.CategoryId, page = 1})</div>
+                                            new {controller = "News", action = "Index", category = link.CategoryId, page = 1},
+                                            new { @class = link == ViewBag.SelectCategory ? "selected" : null})</div>
     }
 </div>
 

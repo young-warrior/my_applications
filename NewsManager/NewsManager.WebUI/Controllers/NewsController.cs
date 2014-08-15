@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -10,11 +11,6 @@ using NewsManager.WebUI.Models;
 
 namespace NewsManager.WebUI.Controllers
 {
-    using System.Collections.Generic;
-    using System.Web.WebPages.Html;
-
-    using SelectListItem = System.Web.Mvc.SelectListItem;
-
     public class NewsController : Controller
     {
         private readonly INewsRepository repo;
@@ -77,11 +73,11 @@ namespace NewsManager.WebUI.Controllers
         // GET: News/Create
         public ActionResult Create()
         {
-            return View("Edit", new NewsModel()
-                                    {
-                                        CategoryID =  null,
-                                        Categories = this.GetCategories()
-                                    });
+            return View("Edit", new NewsModel
+            {
+                CategoryID = null,
+                Categories = GetCategories()
+            });
         }
 
         // POST: News/Create
@@ -113,9 +109,9 @@ namespace NewsManager.WebUI.Controllers
                 return HttpNotFound();
             }
 
-            
-            var model = ConvertEntityToModel(news);
-            model.Categories = this.GetCategories();
+
+            NewsModel model = ConvertEntityToModel(news);
+            model.Categories = GetCategories();
 
             return View(model);
         }
@@ -123,7 +119,7 @@ namespace NewsManager.WebUI.Controllers
         private IEnumerable<SelectListItem> GetCategories()
         {
             var categories = new List<SelectListItem>();
-            categories.Add(new SelectListItem()
+            categories.Add(new SelectListItem
             {
                 Text = "-- None --",
                 Value = null
@@ -133,9 +129,8 @@ namespace NewsManager.WebUI.Controllers
             {
                 Value = c.CategoryNewsID.ToString(),
                 Text = c.Name
+            }).OrderBy(x => x.Text).ToList());
 
-            }).OrderBy(x=>x.Text).ToList());
-            
             return categories;
         }
 
@@ -148,13 +143,12 @@ namespace NewsManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                
                 repo.Update(ConvertModelToEntity(model));
                 return RedirectToAction("Index");
             }
 
-            model.Categories = this.GetCategories();
-            
+            model.Categories = GetCategories();
+
             return View(model);
         }
 
@@ -198,10 +192,10 @@ namespace NewsManager.WebUI.Controllers
 
             if (model.CategoryID != null)
             {
-                news.Category = new CategoryNews()
-                                    {
-                                        CategoryNewsID = model.CategoryID.Value
-                                    };
+                news.Category = new CategoryNews
+                {
+                    CategoryNewsID = model.CategoryID.Value
+                };
             }
 
             return news;
@@ -219,7 +213,7 @@ namespace NewsManager.WebUI.Controllers
             if (news.Category != null)
             {
                 model.CategoryID = news.Category.CategoryNewsID;
-                model.Category = this.ConvertCategoryEntityToModel(news.Category);
+                model.Category = ConvertCategoryEntityToModel(news.Category);
             }
 
             return model;
