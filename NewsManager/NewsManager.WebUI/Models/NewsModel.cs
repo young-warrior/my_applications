@@ -27,7 +27,7 @@
         [Required(ErrorMessage = "Please enter a Title")]
         public string Title { get; set; }
         
-        [DataType(DataType.Time)]
+        [DataType(DataType.DateTime)]
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedDate { get; set; }
 
@@ -35,7 +35,7 @@
         [Required(ErrorMessage = "Please enter a News")]
         [DataType(DataType.MultilineText)]
         
-        [StringLength(Int32.MaxValue)]
+        [StringLength(200)]
         public string BodyNews { get; set; }
         
         public NewsStatusType Status { get; set; }

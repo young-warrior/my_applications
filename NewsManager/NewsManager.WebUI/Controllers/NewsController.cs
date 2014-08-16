@@ -15,7 +15,7 @@ namespace NewsManager.WebUI.Controllers
     {
         private readonly INewsRepository repo;
         private readonly ICategoryNewsRepository categoryRepo;
-        public int PageSize = 5;
+        public int PageSize = 4;
 
         public NewsController()
         {
@@ -43,9 +43,11 @@ namespace NewsManager.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = GetNewsTotalCount(category)
+                    TotalItems = GetNewsTotalCount(category),
                 },
                 CurrentCategory = category,
+                SortOrder = sortOrder,
+                SearchString = searchString,
                 Entities = query.ToList().Select(x => ConvertEntityToModel(x)).ToList()
             };
 
@@ -79,7 +81,6 @@ namespace NewsManager.WebUI.Controllers
                 Categories = GetCategories()
             });
         }
-
         // POST: News/Create
         // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -95,7 +96,6 @@ namespace NewsManager.WebUI.Controllers
 
             return View(news);
         }
-
         // GET: News/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -115,7 +115,6 @@ namespace NewsManager.WebUI.Controllers
 
             return View(model);
         }
-
         private IEnumerable<SelectListItem> GetCategories()
         {
             var categories = new List<SelectListItem>();
@@ -133,7 +132,6 @@ namespace NewsManager.WebUI.Controllers
 
             return categories;
         }
-
         // POST: News/Edit/5
         // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -151,7 +149,6 @@ namespace NewsManager.WebUI.Controllers
 
             return View(model);
         }
-
         // POST: News/Delete/5
         [HttpPost]
         public ActionResult Delete(int? id)
@@ -178,9 +175,7 @@ namespace NewsManager.WebUI.Controllers
         }
 
         #endregion
-
         #region Business Logic
-
         private News ConvertModelToEntity(NewsModel model)
         {
             var news = new News();
@@ -200,7 +195,6 @@ namespace NewsManager.WebUI.Controllers
 
             return news;
         }
-
         private NewsModel ConvertEntityToModel(News news)
         {
             var model = new NewsModel();
@@ -218,8 +212,6 @@ namespace NewsManager.WebUI.Controllers
 
             return model;
         }
-
-
         private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
         {
             return new CategoryNews
@@ -228,7 +220,6 @@ namespace NewsManager.WebUI.Controllers
                 Name = category.Name
             };
         }
-
         private CategoryNewsModel ConvertCategoryEntityToModel(CategoryNews category)
         {
             return new CategoryNewsModel
@@ -237,7 +228,6 @@ namespace NewsManager.WebUI.Controllers
                 Name = category.Name
             };
         }
-
         private int GetNewsTotalCount(int? categoryId)
         {
             return !categoryId.HasValue
@@ -245,14 +235,12 @@ namespace NewsManager.WebUI.Controllers
                 : repo.NewsEntities.Include(x => x.Category)
                     .Count(e => e.Category != null && e.Category.CategoryNewsID == categoryId);
         }
-
         private void SetFilterParameters(string sortOrder)
         {
             // Prepare filter parameter for Title, CreatesDate
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
             ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
         }
-
         private IQueryable<News> ApplyFilter(IQueryable<News> query, string searchString)
         {
             if (!String.IsNullOrEmpty(searchString))

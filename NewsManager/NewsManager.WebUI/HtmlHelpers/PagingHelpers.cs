@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Text;
 using System.Web.Mvc;
 using NewsManager.WebUI.Models;

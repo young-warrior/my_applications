@@ -41,7 +41,7 @@
                                 Entities =
                                     query.ToList()
                                     .Select(x => this.ConvertEntityToModel(x))
-                                    .ToList()
+                                    .Distinct().ToList()
                             };
 
             return View(model);
