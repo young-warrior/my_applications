@@ -35,8 +35,10 @@ namespace NewsManager.WebUI
               new { controller = "News", action = "Index" },
               new { page = @"\d+" }
             );
-
             routes.MapRoute(null, "{controller}/{action}");
+            
+
+            
         }
 
     }

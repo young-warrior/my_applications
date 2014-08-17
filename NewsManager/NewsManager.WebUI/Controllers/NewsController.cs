@@ -37,8 +37,7 @@ namespace NewsManager.WebUI.Controllers
             query = ApplyFilter(query, searchString);
             SetFilterParameters(sortOrder);
             int count = GetNewsTotalCount(query);
-
-//           
+           
             if (!String.IsNullOrEmpty(searchString))
                 {
                     query = ApplyFilter(query, carrentFilter);

@@ -38,7 +38,7 @@
     <tr bgcolor ="#cccccc">
 
         <th>
-            Categories
+            @Html.ActionLink("Category", "List", new { sortOrder = ViewBag.CategoryParm}) 
         </th>
         <th colspan="2">
             Actions
@@ -58,7 +58,10 @@
                 @Html.ActionLink(
                     "Delete",
                     "List",
-                    null,
+        new {
+            page = Model.PagingInfo.CurrentPage
+        }
+                    ,
                     new
                     {
                         onclick = String.Format("return deleleCategory('{0}', {1});",
@@ -75,7 +78,7 @@
 <div class="pager ">
     @Html.PageLinks(Model.PagingInfo, x =>
     {
-        if (Model.PagingInfo == null)
+        if (Model.SortOrder == null && Model.PagingInfo == null)
             return Url.Action("List", new
             {
                 page = x
@@ -84,6 +87,7 @@
             Url.Action("List", new
             {
                 page = x,
+                category = Model.SortOrder
                 
             });
     }

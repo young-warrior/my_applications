@@ -9,7 +9,7 @@ namespace NewsManager.WebUI.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Start()
+        public ActionResult Index()
         {
             return View();
         }

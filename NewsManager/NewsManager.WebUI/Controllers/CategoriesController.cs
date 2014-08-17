@@ -1,4 +1,6 @@
-﻿namespace NewsManager.WebUI.Controllers
+﻿using System;
+
+namespace NewsManager.WebUI.Controllers
 {
     using System.Linq;
     using System.Net;
@@ -13,7 +15,7 @@
         private readonly ICategoryNewsRepository repo;
 
         public int PageSize = 10;
-
+        
         public CategoriesController()
         {
             this.repo = new CategoryNewsRepository();
@@ -24,11 +26,20 @@
         #region Actions
 
         // GET: News
-        public ActionResult List(int page = 1)
+        public ActionResult List(string sortOrder,int page = 1)
         {
             // gets news by category
-            IQueryable<CategoryNews> query = this.GetEntities(page);
+            IQueryable<CategoryNews> query = this.GetEntities();
 
+            query = ApplySorting(query, sortOrder);
+            SetFilterParameters(sortOrder);
+            int count = GetNewsTotalCount(query);
+
+            if (!String.IsNullOrEmpty(sortOrder))
+            {
+                query = ApplySorting(query, sortOrder);
+            }
+            query = ApplyPaging(query, page);
             var model = new CategoriesNewListModel
                             {
                                 PagingInfo =
@@ -36,15 +47,44 @@
                                         {
                                             CurrentPage = page,
                                             ItemsPerPage = this.PageSize,
-                                            TotalItems = this.GetNewsTotalCount()
+                                            TotalItems = count
                                         },
+                                SortOrder = sortOrder,
                                 Entities =
-                                    query.ToList()
-                                    .Select(x => this.ConvertEntityToModel(x))
-                                    .Distinct().ToList()
+                                    query.ToList().Select(x => this.ConvertEntityToModel(x)).ToList()
                             };
 
             return View(model);
+        }
+        private IQueryable<CategoryNews> ApplyPaging(IQueryable<CategoryNews> query, int page)
+        {
+            return query.Skip((page - 1) * PageSize)
+               .Take(PageSize);
+
+        }
+        private void SetFilterParameters(string sortOrder)
+        {
+            // Prepare filter parameter for Title, CreatesDate
+           ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
+        }
+        private IQueryable<CategoryNews> ApplySorting(IQueryable<CategoryNews> query, string sortOrder)
+        {
+           
+            switch (sortOrder)
+            {
+                
+                case "Category":
+                    query = query.OrderByDescending(s => s.Name);
+                    break;
+                default:
+                    query = query.OrderBy(s => s.Name);
+                    break;
+                
+
+            }
+
+            return query;
+        
         }
 
         #endregion
@@ -71,18 +111,16 @@
                        };
         }
 
-        private int GetNewsTotalCount()
+        private int GetNewsTotalCount(IQueryable<CategoryNews> query)
         {
             return this.repo.CategoryNewsEntities.Count();
         }
 
-        private IQueryable<CategoryNews> GetEntities(int page)
+        private IQueryable<CategoryNews> GetEntities()
         {
-            return
-                this.repo.CategoryNewsEntities.OrderBy(p => p.Name)
+            return this.repo.CategoryNewsEntities;
 
-                    .Skip((page - 1) * this.PageSize)
-                    .Take(this.PageSize);
+
         }
 
         public ActionResult Create()

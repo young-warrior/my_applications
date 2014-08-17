@@ -6,6 +6,7 @@ namespace NewsManager.WebUI.Models
     {
         public List<CategoryNewsModel> Entities { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public string SortOrder { get; set; }
         
     }
 }
