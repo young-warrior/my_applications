@@ -203,6 +203,7 @@
 
             model.NewsID = news.NewsID;
             model.BodyNews = news.BodyNews;
+            model.TitleShort = GetShortTitle(news.Title);
             model.Title = news.Title;
             model.Status = news.Status;
             model.CreatedDate = news.CreatedDate;
@@ -214,6 +215,28 @@
             }
 
             return model;
+        }
+
+        private string GetShortTitle(string title)
+        {
+
+            string[] b = title.Split(new char[] { ' ' });
+            List<string> words = new List<string>();
+            int count;
+            foreach (var word in b)
+            {
+                if (!string.IsNullOrEmpty(word))
+                {
+                    words.Add(word);
+                    if (words.Count() == 5 )
+                    {
+                        words.Add("...");
+                        break;
+                    }
+                }
+            }
+           return String.Join(" ", words);
+                   
         }
 
         private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
