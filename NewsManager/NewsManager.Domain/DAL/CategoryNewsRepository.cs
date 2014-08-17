@@ -1,16 +1,23 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace NewsManager.Domain.DAL
 {
-    using System.Collections.Generic;
+    
     using System.Linq;
 
+    using NewsManager.Domain.Abstract;
     using NewsManager.Domain.Entities;
 
     public class CategoryNewsRepository : ICategoryNewsRepository
     {
+        private readonly INewsRepository newsRepo;
+
         readonly DBContext context = new DBContext();
+
+        public CategoryNewsRepository(INewsRepository newsRepo)
+        {
+            this.newsRepo = newsRepo;
+        }
 
         public IQueryable<CategoryNews> CategoryNewsEntities
         {
@@ -45,20 +52,21 @@ namespace NewsManager.Domain.DAL
             return context.CategoriesNews.SingleOrDefault(b => b.Name == category); 
 
         }
-        
+
         /// <summary>
         /// Soft delete of categories
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(int id, IList<News>  newsList)
+        public void Delete(int id)
         {
             CategoryNews category = FindById(id);
             if (category != null)
             {
                 category.IsActive = false;
-                foreach (var news in newsList)
+
+                foreach (var news in newsRepo.FindByCategoryId(id))
                 {
-                    news.IsActive = false;
+                    newsRepo.Delete(news.NewsID);
                 }
 
                 context.SaveChanges();
@@ -85,13 +93,13 @@ namespace NewsManager.Domain.DAL
                 var category = this.FindCateoryByName(news.Name);
                 if (category == null)
                 {
-                    news = context.CategoriesNews.Add(new CategoryNews()
-                    {
-                        Name = news.Name
-                    });
+                    news = context.CategoriesNews.Add(new CategoryNews() { Name = news.Name });
                     context.CategoriesNews.Add(news);
                 }
-               
+                else
+                {
+                    category.IsActive = true;
+                }
 
             }
             

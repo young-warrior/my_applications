@@ -7,7 +7,7 @@
 }
 
 <script>
-    function deleleCategory(message, id) {
+    function deleleCategory(message, id, url) {
 
         var serviceUrl = '/Categories/Delete?id=' + id;
         if (confirm(message)) {
@@ -17,16 +17,15 @@
                 data: param = "",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                //error : errorFunc
+                success : successFunc
             });
-//
-//            function errorFunc(status, errorMessage) {
-//                console.log(status);
-//                alert(status + " " + errorMessage);
-//            }
+            function successFunc(data, status) {
+                window.location = url;
+                console.log('Refresh page to ' + url);
+            }
         }
 
-        return true;
+        return false;
     }
 </script>
 
@@ -58,14 +57,12 @@
                 @Html.ActionLink(
                     "Delete",
                     "List",
-        new {
-            page = Model.PagingInfo.CurrentPage
-        }
-                    ,
+                    null,
                     new
                     {
-                        onclick = String.Format("return deleleCategory('{0}', {1});",
-                            string.Format("Are you sure you wish to delete {0} category?", item.Name), item.CategoryNewsID)
+                        onclick = String.Format("return deleleCategory('{0}', {1}, '{2}');",
+                            string.Format("Are you sure you wish to delete {0} category?", item.Name), item.CategoryNewsID, 
+                            String.Format("/Categories/List?page={0}", Model.PagingInfo.CurrentPage))
                     })
             </td>
         </tr>

@@ -1,26 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
-using NewsManager.Domain.Abstract;
-using NewsManager.Domain.DAL;
-using NewsManager.Domain.Entities;
-using NewsManager.WebUI.Models;
-
-namespace NewsManager.WebUI.Controllers
+﻿namespace NewsManager.WebUI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+
+    using NewsManager.Domain.Abstract;
+    using NewsManager.Domain.DAL;
+    using NewsManager.Domain.Entities;
+    using NewsManager.WebUI.Models;
+
     public class NewsController : Controller
     {
         private readonly INewsRepository repo;
+
         private readonly ICategoryNewsRepository categoryRepo;
+
         public int PageSize = 4;
 
-        public NewsController()
+        public NewsController(INewsRepository newsRepository, ICategoryNewsRepository categoryNewsRepository)
         {
-            repo = new NewsRepository();
-            categoryRepo = new CategoryNewsRepository();
+            this.repo = newsRepository;
+            this.categoryRepo = categoryNewsRepository;
         }
 
         #region Actions
@@ -29,35 +32,36 @@ namespace NewsManager.WebUI.Controllers
         public ActionResult Index(string searchString, string carrentFilter, string sortOrder, int? category, int page)
         {
             // gets news by categoryId
-            IQueryable<News> query = GetEntities(category);
-            
-            ViewBag.carrentFilter = searchString;
-            
-            query = ApplySorting(query, sortOrder);
-            query = ApplyFilter(query, searchString);
-            SetFilterParameters(sortOrder);
-            int count = GetNewsTotalCount(query);
-           
-            if (!String.IsNullOrEmpty(searchString))
-                {
-                    query = ApplyFilter(query, carrentFilter);
-                } 
-            query = ApplyPaging(query, page);
-                
-            var model = new NewsListModel
-            {
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = count,
-                },
-                CurrentCategory = category,
-                SortOrder = sortOrder,
-                SearchString = searchString,
-                Entities = query.ToList().Select(x => ConvertEntityToModel(x)).ToList()
-            };
+            IQueryable<News> query = this.GetEntities(category);
 
+            this.ViewBag.carrentFilter = searchString;
+
+            query = this.ApplySorting(query, sortOrder);
+            query = this.ApplyFilter(query, searchString);
+            this.SetFilterParameters(sortOrder);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                query = this.ApplyFilter(query, carrentFilter);
+            }
+
+            int totalCount = query.Count();
+            query = this.ApplyPaging(query, page);
+
+            var model = new NewsListModel
+                            {
+                                PagingInfo =
+                                    new PagingInfo
+                                        {
+                                            CurrentPage = page,
+                                            ItemsPerPage = this.PageSize,
+                                            TotalItems = totalCount,
+                                        },
+                                CurrentCategory = category,
+                                SortOrder = sortOrder,
+                                SearchString = searchString,
+                                Entities = query.ToList().Select(this.ConvertEntityToModel).ToList()
+                            };
 
             return View(model);
         }
@@ -70,24 +74,21 @@ namespace NewsManager.WebUI.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            News news = repo.FindById(id.Value);
+            News news = this.repo.FindById(id.Value);
             if (news == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            return View(ConvertEntityToModel(news));
+            return this.View(this.ConvertEntityToModel(news));
         }
 
         // GET: News/Create
         public ActionResult Create()
         {
-            return View("Edit", new NewsModel
-            {
-                CategoryID = null,
-                Categories = GetCategories()
-            });
+            return this.View("Edit", new NewsModel { CategoryID = null, Categories = this.GetCategories() });
         }
+
         // POST: News/Create
         // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -95,14 +96,15 @@ namespace NewsManager.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(NewsModel news)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                repo.Add(ConvertModelToEntity(news));
-                return RedirectToAction("Index");
+                this.repo.Add(this.ConvertModelToEntity(news));
+                return this.RedirectToAction("Index");
             }
 
             return View(news);
         }
+
         // GET: News/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -110,35 +112,32 @@ namespace NewsManager.WebUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            News news = repo.FindById(id.Value);
+            News news = this.repo.FindById(id.Value);
             if (news == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-
-            NewsModel model = ConvertEntityToModel(news);
-            model.Categories = GetCategories();
+            NewsModel model = this.ConvertEntityToModel(news);
+            model.Categories = this.GetCategories();
 
             return View(model);
         }
+
         private IEnumerable<SelectListItem> GetCategories()
         {
             var categories = new List<SelectListItem>();
-            categories.Add(new SelectListItem
-            {
-                Text = "-- None --",
-                Value = null
-            });
+            categories.Add(new SelectListItem { Text = "-- None --", Value = null });
 
-            categories.AddRange(categoryRepo.CategoryNewsEntities.Select(c => new SelectListItem
-            {
-                Value = c.CategoryNewsID.ToString(),
-                Text = c.Name
-            }).OrderBy(x => x.Text).ToList());
+            categories.AddRange(
+                this.categoryRepo.CategoryNewsEntities.Select(
+                    c => new SelectListItem { Value = c.CategoryNewsID.ToString(), Text = c.Name })
+                    .OrderBy(x => x.Text)
+                    .ToList());
 
             return categories;
         }
+
         // POST: News/Edit/5
         // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -146,16 +145,17 @@ namespace NewsManager.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(NewsModel model)
         {
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                repo.Update(ConvertModelToEntity(model));
-                return RedirectToAction("Index");
+                this.repo.Update(this.ConvertModelToEntity(model));
+                return this.RedirectToAction("Index");
             }
 
-            model.Categories = GetCategories();
+            model.Categories = this.GetCategories();
 
             return View(model);
         }
+
         // POST: News/Delete/5
         [HttpPost]
         public ActionResult Delete(int? id)
@@ -164,44 +164,39 @@ namespace NewsManager.WebUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            News news = repo.FindById(id.Value);
+            News news = this.repo.FindById(id.Value);
             if (news == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            repo.Delete(id.Value);
+            this.repo.Delete(id.Value);
 
-            return new JsonResult
-            {
-                Data = new
-                {
-                    deleted = true
-                }
-            };
+            return new JsonResult { Data = new { deleted = true } };
         }
 
         #endregion
+
         #region Business Logic
+
         private News ConvertModelToEntity(NewsModel model)
         {
-            var news = new News();
-
-            news.NewsID = model.NewsID;
-            news.BodyNews = model.BodyNews;
-            news.Title = model.Title;
-            news.Status = model.Status;
+            var news = new News
+                           {
+                               NewsID = model.NewsID,
+                               BodyNews = model.BodyNews,
+                               Title = model.Title,
+                               Status = model.Status
+                           };
 
             if (model.CategoryID != null)
             {
-                news.Category = new CategoryNews
-                {
-                    CategoryNewsID = model.CategoryID.Value
-                };
+                news.Category = new CategoryNews { CategoryNewsID = model.CategoryID.Value };
             }
 
             return news;
         }
+
         private NewsModel ConvertEntityToModel(News news)
         {
             var model = new NewsModel();
@@ -215,31 +210,23 @@ namespace NewsManager.WebUI.Controllers
             if (news.Category != null)
             {
                 model.CategoryID = news.Category.CategoryNewsID;
-                model.Category = ConvertCategoryEntityToModel(news.Category);
+                model.Category = this.ConvertCategoryEntityToModel(news.Category);
             }
 
             return model;
         }
+
         private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
         {
-            return new CategoryNews
-            {
-                CategoryNewsID = category.CategoryNewsID,
-                Name = category.Name
-            };
+            return new CategoryNews { CategoryNewsID = category.CategoryNewsID, Name = category.Name };
         }
+
         private CategoryNewsModel ConvertCategoryEntityToModel(CategoryNews category)
         {
-            return new CategoryNewsModel
-            {
-                CategoryNewsID = category.CategoryNewsID,
-                Name = category.Name
-            };
+            return new CategoryNewsModel { CategoryNewsID = category.CategoryNewsID, Name = category.Name };
         }
-        private int GetNewsTotalCount(IQueryable<News> query)
-        {
-            return query.Count();
-        }
+
+        
         private IQueryable<News> ApplyFilter(IQueryable<News> query, string searchString)
         {
             if (!String.IsNullOrEmpty(searchString))
@@ -249,19 +236,20 @@ namespace NewsManager.WebUI.Controllers
 
             return query;
         }
+
         private IQueryable<News> ApplyPaging(IQueryable<News> query, int page)
         {
-             return query.Skip((page - 1)*PageSize)
-                .Take(PageSize);
-
+            return query.Skip((page - 1) * this.PageSize).Take(this.PageSize);
         }
+
         private void SetFilterParameters(string sortOrder)
         {
             // Prepare filter parameter for Title, CreatesDate
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
-            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
-            ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
+            this.ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
+            this.ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
+            this.ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
         }
+
         private IQueryable<News> ApplySorting(IQueryable<News> query, string sortOrder)
         {
             switch (sortOrder)
@@ -281,8 +269,6 @@ namespace NewsManager.WebUI.Controllers
                 default:
                     query = query.OrderBy(s => s.Title);
                     break;
-                
-
             }
 
             return query;
@@ -290,11 +276,10 @@ namespace NewsManager.WebUI.Controllers
 
         private IQueryable<News> GetEntities(int? category)
         {
-            return repo.NewsEntities
-                .Include(x => x.Category)
-                .Where(p => category == null
-                            || (p.Category != null && p.Category.CategoryNewsID == category))
-                .OrderBy(p => p.NewsID);
+            return
+                this.repo.NewsEntities.Include(x => x.Category)
+                    .Where(p => category == null || (p.Category != null && p.Category.CategoryNewsID == category))
+                    .OrderBy(p => p.NewsID);
         }
 
         #endregion

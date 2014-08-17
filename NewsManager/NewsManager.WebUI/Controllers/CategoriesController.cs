@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace NewsManager.WebUI.Controllers
+﻿namespace NewsManager.WebUI.Controllers
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
@@ -14,15 +13,11 @@ namespace NewsManager.WebUI.Controllers
     {
         private readonly ICategoryNewsRepository repo;
 
-        private NewsRepository newsRepo;
-
         public int PageSize = 10;
-        
 
-        public CategoriesController()
+        public CategoriesController(ICategoryNewsRepository categoryNewsRepository)
         {
-            this.repo = new CategoryNewsRepository();
-            this.newsRepo = new NewsRepository();
+            this.repo = categoryNewsRepository;
         }
 
         // GET: Categories/List
@@ -30,20 +25,21 @@ namespace NewsManager.WebUI.Controllers
         #region Actions
 
         // GET: News
-        public ActionResult List(string sortOrder,int page = 1)
+        public ActionResult List(string sortOrder, int page = 1)
         {
             // gets news by category
-            IQueryable<CategoryNews> query = this.GetEntities();
+            IQueryable<CategoryNews> query = this.repo.CategoryNewsEntities;
 
-            query = ApplySorting(query, sortOrder);
-            SetFilterParameters(sortOrder);
-            int count = GetNewsTotalCount(query);
+            query = this.ApplySorting(query, sortOrder);
+            this.SetFilterParameters(sortOrder);
 
             if (!String.IsNullOrEmpty(sortOrder))
             {
-                query = ApplySorting(query, sortOrder);
+                query = this.ApplySorting(query, sortOrder);
             }
-            query = ApplyPaging(query, page);
+
+            int totalCount = query.Count();
+            query = this.ApplyPaging(query, page);
             var model = new CategoriesNewListModel
                             {
                                 PagingInfo =
@@ -51,44 +47,42 @@ namespace NewsManager.WebUI.Controllers
                                         {
                                             CurrentPage = page,
                                             ItemsPerPage = this.PageSize,
-                                            TotalItems = count
+                                            TotalItems = totalCount
                                         },
                                 SortOrder = sortOrder,
                                 Entities =
-                                    query.ToList().Select(x => this.ConvertEntityToModel(x)).ToList()
+                                    query.ToList()
+                                    .Select(this.ConvertEntityToModel)
+                                    .ToList()
                             };
 
             return View(model);
         }
+
         private IQueryable<CategoryNews> ApplyPaging(IQueryable<CategoryNews> query, int page)
         {
-            return query.Skip((page - 1) * PageSize)
-               .Take(PageSize);
-
+            return query.Skip((page - 1) * this.PageSize).Take(this.PageSize);
         }
+
         private void SetFilterParameters(string sortOrder)
         {
             // Prepare filter parameter for Title, CreatesDate
-           ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
+            this.ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
         }
+
         private IQueryable<CategoryNews> ApplySorting(IQueryable<CategoryNews> query, string sortOrder)
         {
-           
             switch (sortOrder)
             {
-                
                 case "Category":
                     query = query.OrderByDescending(s => s.Name);
                     break;
                 default:
                     query = query.OrderBy(s => s.Name);
                     break;
-                
-
             }
 
             return query;
-        
         }
 
         #endregion
@@ -97,36 +91,16 @@ namespace NewsManager.WebUI.Controllers
 
         private CategoryNewsModel ConvertEntityToModel(CategoryNews category)
         {
-            var model = new CategoryNewsModel
-                            {
-                                CategoryNewsID = category.CategoryNewsID, 
-                                Name = category.Name
-                            };
+            var model = new CategoryNewsModel { CategoryNewsID = category.CategoryNewsID, Name = category.Name };
 
             return model;
         }
 
         private CategoryNews ConvertCategoryModelToEntity(CategoryNewsModel category)
         {
-            return new CategoryNews
-                       {
-                           CategoryNewsID = category.CategoryNewsID, 
-                           Name = category.Name
-                       };
+            return new CategoryNews { CategoryNewsID = category.CategoryNewsID, Name = category.Name };
         }
-
-        private int GetNewsTotalCount(IQueryable<CategoryNews> query)
-        {
-            return this.repo.CategoryNewsEntities.Count();
-        }
-
-        private IQueryable<CategoryNews> GetEntities()
-        {
-            return this.repo.CategoryNewsEntities;
-
-
-        }
-
+        
         public ActionResult Create()
         {
             return this.View("Edit", new CategoryNewsModel());
@@ -193,7 +167,7 @@ namespace NewsManager.WebUI.Controllers
                 return this.HttpNotFound();
             }
 
-            this.repo.Delete(id.Value, newsRepo.FindByCategoryId(id.Value));
+            this.repo.Delete(id.Value);
 
             return new JsonResult { Data = new { deleted = true } };
         }
@@ -201,6 +175,3 @@ namespace NewsManager.WebUI.Controllers
         #endregion
     }
 }
-
-
-    

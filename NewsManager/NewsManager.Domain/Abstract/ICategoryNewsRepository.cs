@@ -15,7 +15,7 @@
 
         void Add(CategoryNews category);
 
-        void Delete(int id, IList<News> newsList);
+        void Delete(int id);
 
         void AddOrUpdate(CategoryNews category);
     }
