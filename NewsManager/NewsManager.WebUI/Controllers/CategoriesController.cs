@@ -14,11 +14,15 @@ namespace NewsManager.WebUI.Controllers
     {
         private readonly ICategoryNewsRepository repo;
 
+        private NewsRepository newsRepo;
+
         public int PageSize = 10;
         
+
         public CategoriesController()
         {
             this.repo = new CategoryNewsRepository();
+            this.newsRepo = new NewsRepository();
         }
 
         // GET: Categories/List
@@ -189,7 +193,7 @@ namespace NewsManager.WebUI.Controllers
                 return this.HttpNotFound();
             }
 
-            this.repo.Delete(id.Value);
+            this.repo.Delete(id.Value, newsRepo.FindByCategoryId(id.Value));
 
             return new JsonResult { Data = new { deleted = true } };
         }

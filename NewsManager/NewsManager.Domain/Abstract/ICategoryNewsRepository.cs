@@ -1,5 +1,6 @@
 ﻿namespace NewsManager.Domain.DAL
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using NewsManager.Domain.Entities;
@@ -14,7 +15,7 @@
 
         void Add(CategoryNews category);
 
-        void Delete(int id);
+        void Delete(int id, IList<News> newsList);
 
         void AddOrUpdate(CategoryNews category);
     }

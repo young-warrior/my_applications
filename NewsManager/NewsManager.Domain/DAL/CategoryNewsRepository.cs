@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace NewsManager.Domain.DAL
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using NewsManager.Domain.Entities;
@@ -13,7 +14,10 @@ namespace NewsManager.Domain.DAL
 
         public IQueryable<CategoryNews> CategoryNewsEntities
         {
-            get { return this.context.CategoriesNews; }
+            get
+            {
+                return this.context.CategoriesNews.Where(x=>x.IsActive);
+            }
         }
 
         public CategoryNews Update(CategoryNews news)
@@ -42,26 +46,22 @@ namespace NewsManager.Domain.DAL
 
         }
         
-        //TODO: Fix {"The DELETE statement conflicted with the REFERENCE constraint \"FK_dbo.News_dbo.CategoryNews_Category_CategoryNewsID\". The conflict occurred in database \"NewsDB\", table \"dbo.News\", column 'Category_CategoryNewsID'.\r\nThe statement has been terminated."}
-        //Possible solution: Use soft delete
-        public void Delete(int id)
+        /// <summary>
+        /// Soft delete of categories
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(int id, IList<News>  newsList)
         {
             CategoryNews category = FindById(id);
-//            news.IsActive = false;
-//            this.Update(news);
-
             if (category != null)
             {
-                try
+                category.IsActive = false;
+                foreach (var news in newsList)
                 {
-                    context.CategoriesNews.Remove(category);
-                    context.SaveChanges();
+                    news.IsActive = false;
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
-                
+
+                context.SaveChanges();
             }
         }
 

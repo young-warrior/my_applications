@@ -5,9 +5,16 @@ namespace NewsManager.Domain.Entities
 
     public class CategoryNews
     {
+        public CategoryNews()
+        {
+            IsActive = true;
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryNewsID { get; set; }
 
         public String Name { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

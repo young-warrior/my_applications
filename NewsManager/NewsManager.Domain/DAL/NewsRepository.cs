@@ -2,15 +2,19 @@
 using System.Linq;
 using NewsManager.Domain.Abstract;
 using NewsManager.Domain.Entities;
-using NewsManager.Domain.DAL;
 
 namespace NewsManager.Domain.DAL
 {
+    using System.Collections.Generic;
+    using System.Data.Entity;
+
     public class NewsRepository : INewsRepository
     {
         readonly DBContext _context = new DBContext();
-        public IQueryable<News> NewsEntities {
-            get { return _context.News; }
+
+        public IQueryable<News> NewsEntities 
+        {
+            get { return _context.News.Where(x => x.IsActive); }
         }
         
         public News Update(News news)
@@ -33,24 +37,29 @@ namespace NewsManager.Domain.DAL
             return _context.News.Find(id);
         }
 
-        public CategoryNews FindCategoryByName(String cateogry)
-        {
-            return _context.CategoriesNews.SingleOrDefault(x => x.Name == cateogry);
-            
-        }
-
         public CategoryNews FindCategoryById(int cateogryId)
         {
             return _context.CategoriesNews
                 .SingleOrDefault(x => x.CategoryNewsID == cateogryId);
         }
 
+        public IList<News> FindByCategoryId(int cateogryId)
+        {
+            return NewsEntities.Include(x=>x.Category)
+                .Where(x => x.Category.CategoryNewsID == cateogryId)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Soft delete of news.
+        /// </summary>
+        /// <param name="id"></param>
         public void Delete(int id)
         {
             News news = FindById(id);
             if (news != null)
             {
-                _context.News.Remove(news);
+                news.IsActive = false;
                 _context.SaveChanges();
             }
         }
@@ -70,9 +79,11 @@ namespace NewsManager.Domain.DAL
                 }
                 else
                 {
+                    //set category as active
+                    category.IsActive = true;
                     news.Category = category;
                 }
-
+                
                 news.CreatedDate = DateTime.UtcNow;
                 _context.News.Add(news);
                 _context.SaveChanges();
