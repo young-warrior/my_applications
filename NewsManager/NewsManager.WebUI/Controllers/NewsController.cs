@@ -211,6 +211,7 @@ namespace NewsManager.WebUI.Controllers
             model.BodyNews = news.BodyNews;
             model.Title = news.Title;
             model.Status = news.Status;
+            model.CreatedDate = news.CreatedDate;
 
             if (news.Category != null)
             {
@@ -240,12 +241,6 @@ namespace NewsManager.WebUI.Controllers
         {
             return query.Count();
         }
-        private void SetFilterParameters(string sortOrder)
-        {
-            // Prepare filter parameter for Title, CreatesDate
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
-            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
-        }
         private IQueryable<News> ApplyFilter(IQueryable<News> query, string searchString)
         {
             if (!String.IsNullOrEmpty(searchString))
@@ -261,7 +256,13 @@ namespace NewsManager.WebUI.Controllers
                 .Take(PageSize);
 
         }
-
+        private void SetFilterParameters(string sortOrder)
+        {
+            // Prepare filter parameter for Title, CreatesDate
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
+            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
+            ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
+        }
         private IQueryable<News> ApplySorting(IQueryable<News> query, string sortOrder)
         {
             switch (sortOrder)
@@ -269,15 +270,20 @@ namespace NewsManager.WebUI.Controllers
                 case "Title":
                     query = query.OrderByDescending(s => s.Title);
                     break;
-                case "CreateDate":
+                case "Date":
                     query = query.OrderBy(s => s.CreatedDate);
                     break;
-                case "Date":
+                case "CreateDate":
                     query = query.OrderByDescending(s => s.CreatedDate);
+                    break;
+                case "Category":
+                    query = query.OrderByDescending(s => s.Category.Name);
                     break;
                 default:
                     query = query.OrderBy(s => s.Title);
                     break;
+                
+
             }
 
             return query;

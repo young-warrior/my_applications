@@ -16,7 +16,7 @@
                                    {
                                        NewsID = 1,
                                        Title = "TITLE NEWS 1",
-                                       CreatedDate = DateTime.UtcNow,
+                                       CreatedDate = DateTime.Today,
                                        BodyNews = "BODY NEWS",
                                        Category =
                                            new CategoryNews()
@@ -27,7 +27,7 @@
                                    {
                                        NewsID = 2,
                                        Title = "TITLE NEWS 2",
-                                       CreatedDate = DateTime.UtcNow,
+                                       CreatedDate = DateTime.Today,
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
@@ -38,7 +38,7 @@
                                    {
                                        NewsID = 3,
                                        Title = "TITLE NEWS 3",
-                                       CreatedDate = DateTime.UtcNow,
+                                       CreatedDate = DateTime.Today,
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
@@ -49,7 +49,7 @@
                                    {
                                        NewsID = 4,
                                        Title = "TITLE NEWS 4",
-                                       CreatedDate = DateTime.UtcNow,
+                                       CreatedDate = DateTime.Today,
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
@@ -60,7 +60,7 @@
                                    {
                                        NewsID = 5,
                                        Title = "TITLE NEWS 5",
-                                       CreatedDate = DateTime.UtcNow,
+                                       CreatedDate = DateTime.Today,
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()
@@ -71,7 +71,7 @@
                                    {
                                        NewsID = 6,
                                        Title = "TITLE NEWS 6",
-                                       CreatedDate = DateTime.UtcNow,
+                                       CreatedDate = DateTime.Today,
                                        BodyNews = "THIS IS UNREAD NEWS",
                                        Category =
                                            new CategoryNews()

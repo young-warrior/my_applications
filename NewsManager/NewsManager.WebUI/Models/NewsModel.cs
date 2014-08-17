@@ -28,7 +28,7 @@
         public string Title { get; set; }
         
         [DataType(DataType.DateTime)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+//        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedDate { get; set; }
 
         [Display(Name = "Input field")]
