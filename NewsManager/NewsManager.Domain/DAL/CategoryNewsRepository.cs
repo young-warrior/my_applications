@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NewsManager.Domain.DAL
 {
@@ -36,7 +37,8 @@ namespace NewsManager.Domain.DAL
 
         public CategoryNews FindCateoryByName(String category)
         {
-            return context.CategoriesNews.SingleOrDefault(x => x.Name == category);
+            
+            return context.CategoriesNews.SingleOrDefault(b => b.Name == category); 
 
         }
         
@@ -87,14 +89,13 @@ namespace NewsManager.Domain.DAL
                     {
                         Name = news.Name
                     });
+                    context.CategoriesNews.Add(news);
                 }
-                else
-                {
-                    news = category;
-                }
-                context.CategoriesNews.Add(news);
-                context.SaveChanges();
+               
+
             }
+            
+            context.SaveChanges();
         }
     }
 }

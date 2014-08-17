@@ -31,10 +31,10 @@
         <p>@Html.ActionLink("Add a new news", "Create")</p>
     </tr>
     <tr>
-        @using (Html.BeginForm())
+        @using (Html.BeginForm(FormMethod.Get))
         {
             <p>
-                Find by Title: @Html.TextBox("SearchString") 
+                Find by Title: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string) 
                 <input type="submit" value="Search" />
             </p>
         } 
@@ -42,15 +42,15 @@
     <tr bgcolor="#cccccc">
         <th>
 
-            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, category = Model.CurrentCategory})
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
 
         </th>
         <th>
-            @Html.ActionLink("CreatedDate", "Index", new { sortOrder = ViewBag.DateSortParm, category = Model.CurrentCategory })
+            @Html.ActionLink("CreatedDate", "Index", new { sortOrder = ViewBag.DateSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
 
         </th>
         <th>
-            @Html.ActionLink("Category", "Index", new {  })
+            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.Category, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
 
         </th>
         <th>

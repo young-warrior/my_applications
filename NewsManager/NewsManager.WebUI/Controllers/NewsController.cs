@@ -26,24 +26,32 @@ namespace NewsManager.WebUI.Controllers
         #region Actions
 
         // GET: News
-        public ActionResult Index(string searchString, string sortOrder, int? category, int page)
+        public ActionResult Index(string searchString, string carrentFilter, string sortOrder, int? category, int page)
         {
             // gets news by categoryId
-            IQueryable<News> query = GetEntities(category, page);
-
+            IQueryable<News> query = GetEntities(category);
+            
+            ViewBag.carrentFilter = searchString;
+            
             query = ApplySorting(query, sortOrder);
             query = ApplyFilter(query, searchString);
-
             SetFilterParameters(sortOrder);
+            int count = GetNewsTotalCount(query);
 
-
+//           
+            if (!String.IsNullOrEmpty(searchString))
+                {
+                    query = ApplyFilter(query, carrentFilter);
+                } 
+            query = ApplyPaging(query, page);
+                
             var model = new NewsListModel
             {
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = GetNewsTotalCount(category),
+                    TotalItems = count,
                 },
                 CurrentCategory = category,
                 SortOrder = sortOrder,
@@ -228,12 +236,9 @@ namespace NewsManager.WebUI.Controllers
                 Name = category.Name
             };
         }
-        private int GetNewsTotalCount(int? categoryId)
+        private int GetNewsTotalCount(IQueryable<News> query)
         {
-            return !categoryId.HasValue
-                ? repo.NewsEntities.Count()
-                : repo.NewsEntities.Include(x => x.Category)
-                    .Count(e => e.Category != null && e.Category.CategoryNewsID == categoryId);
+            return query.Count();
         }
         private void SetFilterParameters(string sortOrder)
         {
@@ -249,6 +254,12 @@ namespace NewsManager.WebUI.Controllers
             }
 
             return query;
+        }
+        private IQueryable<News> ApplyPaging(IQueryable<News> query, int page)
+        {
+             return query.Skip((page - 1)*PageSize)
+                .Take(PageSize);
+
         }
 
         private IQueryable<News> ApplySorting(IQueryable<News> query, string sortOrder)
@@ -272,15 +283,13 @@ namespace NewsManager.WebUI.Controllers
             return query;
         }
 
-        private IQueryable<News> GetEntities(int? category, int page)
+        private IQueryable<News> GetEntities(int? category)
         {
             return repo.NewsEntities
                 .Include(x => x.Category)
                 .Where(p => category == null
                             || (p.Category != null && p.Category.CategoryNewsID == category))
-                .OrderBy(p => p.NewsID)
-                .Skip((page - 1)*PageSize)
-                .Take(PageSize);
+                .OrderBy(p => p.NewsID);
         }
 
         #endregion
