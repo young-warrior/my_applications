@@ -32,30 +32,24 @@
         return false;
     }
 </script>
-           
+<div>
+    <p>@Html.ActionLink("Create a new news", "Create")</p>
+    
+    @using (Html.BeginForm(FormMethod.Get))
+    {
+        <p>
+            Find by:
+
+            @Html.RadioButton("searchBy", "Title", true)<text>Title</text>
+            @Html.RadioButton("searchBy", "Categories")<text>Category</text>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+</div>     
 <table>
     
-    <tr>
-        <p>@Html.ActionLink("Add a new news", "Create")</p>
-    </tr>
-    <tr>
-        @using (Html.BeginForm(FormMethod.Get))
-        {
-            <p>
-                Find by:
-            
-                @Html.RadioButton("searchBy", "Title", true)<text>Title</text>
-                @Html.RadioButton("searchBy", "Categories")<text>Category</text>
-                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-                <input type="submit" value="Search" />
-            </p>
-            
-        }
-        @foreach(NewsModel item in Model.Entities)
-    {
-            
-    }
-    </tr>
     <tr bgcolor="#cccccc">
         <th>
 
@@ -71,7 +65,7 @@
 
         </th>
         <th>
-            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
+            @Html.ActionLink("Status", "Index", new {sortOrder = ViewBag.StatusParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
 
         </th>
         <th colspan="3">

@@ -1,4 +1,5 @@
-﻿@model NewsManager.WebUI.Models.NewsModel
+﻿
+@model NewsManager.WebUI.Models.NewsModel
 
 @{
     ViewBag.Title = "Details";
@@ -33,5 +34,6 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new {id = Model.NewsID}) |
-    @Html.ActionLink("Back to News", "Index" )
+
+@Html.ActionLink("Back to News", "Index")
 </p>

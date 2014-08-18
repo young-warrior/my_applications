@@ -12,7 +12,7 @@ namespace NewsManager.Domain.Abstract
         News Update(News news);
         News FindById(int id);
         IList<News> FindByCategoryId(int cateogryId);
-        void Add(News news);
+        void Create(News news);
         void Delete(int id);
     }
 }

@@ -84,9 +84,14 @@ DIV.pager A
   textarea {
       width: 400px;
   }
-  table {
-      width: 100%;
-  }
+table {
+    
+    }
+   table tr td {
+       width: 50px;
+    
+   
+   }    
 
 
   

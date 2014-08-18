@@ -238,7 +238,7 @@ jQuery.fn = jQuery.prototype = {
 		// Build a new jQuery matched element set
 		var ret = jQuery.merge( this.constructor(), elems );
 
-		// Add the old object onto the stack (as a reference)
+		// Create the old object onto the stack (as a reference)
 		ret.prevObject = this;
 		ret.context = this.context;
 
@@ -254,7 +254,7 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	ready: function( fn ) {
-		// Add the callback
+		// Create the callback
 		jQuery.ready.promise().done( fn );
 
 		return this;
@@ -1034,7 +1034,7 @@ jQuery.Callbacks = function( options ) {
 		},
 		// Actual Callbacks object
 		self = {
-			// Add a callback or a collection of callbacks to the list
+			// Create a callback or a collection of callbacks to the list
 			add: function() {
 				if ( list ) {
 					// First, we save the current length
@@ -1193,7 +1193,7 @@ jQuery.extend({
 		// Keep pipe for back-compat
 		promise.pipe = promise.then;
 
-		// Add list-specific methods
+		// Create list-specific methods
 		jQuery.each( tuples, function( i, tuple ) {
 			var list = tuple[ 2 ],
 				stateString = tuple[ 3 ];
@@ -1895,7 +1895,7 @@ jQuery.extend({
 		hooks.cur = fn;
 		if ( fn ) {
 
-			// Add a progress sentinel to prevent the fx queue from being
+			// Create a progress sentinel to prevent the fx queue from being
 			// automatically dequeued
 			if ( type === "fx" ) {
 				queue.unshift( "inprogress" );
@@ -2721,7 +2721,7 @@ jQuery.event = {
 					jQuery.event.dispatch.apply( eventHandle.elem, arguments ) :
 					undefined;
 			};
-			// Add elem as a property of the handle fn to prevent a memory leak with IE non-native events
+			// Create elem as a property of the handle fn to prevent a memory leak with IE non-native events
 			eventHandle.elem = elem;
 		}
 
@@ -2780,7 +2780,7 @@ jQuery.event = {
 				}
 			}
 
-			// Add to the element's handler list, delegates in front
+			// Create to the element's handler list, delegates in front
 			if ( selector ) {
 				handlers.splice( handlers.delegateCount++, 0, handleObj );
 			} else {
@@ -3100,7 +3100,7 @@ jQuery.event = {
 			}
 		}
 
-		// Add the remaining (directly-bound) handlers
+		// Create the remaining (directly-bound) handlers
 		if ( delegateCount < handlers.length ) {
 			handlerQueue.push({ elem: this, handlers: handlers.slice( delegateCount ) });
 		}
@@ -3155,7 +3155,7 @@ jQuery.event = {
 		props: "char charCode key keyCode".split(" "),
 		filter: function( event, original ) {
 
-			// Add which for key events
+			// Create which for key events
 			if ( event.which == null ) {
 				event.which = original.charCode != null ? original.charCode : original.keyCode;
 			}
@@ -3181,12 +3181,12 @@ jQuery.event = {
 				event.pageY = original.clientY + ( doc && doc.scrollTop  || body && body.scrollTop  || 0 ) - ( doc && doc.clientTop  || body && body.clientTop  || 0 );
 			}
 
-			// Add relatedTarget, if necessary
+			// Create relatedTarget, if necessary
 			if ( !event.relatedTarget && fromElement ) {
 				event.relatedTarget = fromElement === event.target ? original.toElement : fromElement;
 			}
 
-			// Add which for click: 1 === left; 2 === middle; 3 === right
+			// Create which for click: 1 === left; 2 === middle; 3 === right
 			// Note: button is not normalized, so don't use it
 			if ( !event.which && button !== undefined ) {
 				event.which = ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 : 0 ) ) );
@@ -4984,7 +4984,7 @@ Expr = Sizzle.selectors = {
 	}
 };
 
-// Add button/input type pseudos
+// Create button/input type pseudos
 for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
 	Expr.pseudos[ i ] = createInputPseudo( i );
 }
@@ -5231,7 +5231,7 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 				}
 			}
 
-		// Add elements to results, through postFinder if defined
+		// Create elements to results, through postFinder if defined
 		} else {
 			matcherOut = condense(
 				matcherOut === results ?
@@ -5322,7 +5322,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				cachedruns = matcherCachedRuns;
 			}
 
-			// Add elements passing elementMatchers directly to results
+			// Create elements passing elementMatchers directly to results
 			for ( ; (elem = elems[i]) != null; i++ ) {
 				if ( byElement && elem ) {
 					for ( j = 0; (matcher = elementMatchers[j]); j++ ) {
@@ -5373,7 +5373,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 					setMatched = condense( setMatched );
 				}
 
-				// Add matches to results
+				// Create matches to results
 				push.apply( results, setMatched );
 
 				// Seedless set matches succeeding multiple successful matchers stipulate sorting
@@ -6431,7 +6431,7 @@ jQuery.extend({
 
 			if ( elem || elem === 0 ) {
 
-				// Add nodes directly
+				// Create nodes directly
 				if ( jQuery.type( elem ) === "object" ) {
 					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
@@ -6735,7 +6735,7 @@ jQuery.fn.extend({
 });
 
 jQuery.extend({
-	// Add in style property hooks for overriding the default
+	// Create in style property hooks for overriding the default
 	// behavior of getting and setting a style property
 	cssHooks: {
 		opacity: {
@@ -6762,7 +6762,7 @@ jQuery.extend({
 		"zoom": true
 	},
 
-	// Add in properties whose names you wish to fix before
+	// Create in properties whose names you wish to fix before
 	// setting or getting the value
 	cssProps: {
 		// normalize float css property
@@ -7789,7 +7789,7 @@ jQuery.extend({
 		jqXHR.error = jqXHR.fail;
 
 		// Remove hash character (#7531: and string promotion)
-		// Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
+		// Create protocol if not provided (#5866: IE7 issue with protocol-less urls)
 		// Handle falsy url in the settings object (#10093: consistency with old signature)
 		// We also use the url parameter if available
 		s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
@@ -7851,7 +7851,7 @@ jQuery.extend({
 				delete s.data;
 			}
 
-			// Add anti-cache in url if needed
+			// Create anti-cache in url if needed
 			if ( s.cache === false ) {
 				s.url = rts.test( cacheURL ) ?
 
@@ -8575,7 +8575,7 @@ if ( xhrSupported ) {
 								xhrCallbacks = {};
 								jQuery( window ).unload( xhrOnUnloadAbort );
 							}
-							// Add to list of active xhrs callbacks
+							// Create to list of active xhrs callbacks
 							xhrCallbacks[ handle ] = callback;
 						}
 						xhr.onreadystatechange = callback;
@@ -9428,7 +9428,7 @@ jQuery.fn.extend({
 				parentOffset = offsetParent.offset();
 			}
 
-			// Add offsetParent borders
+			// Create offsetParent borders
 			parentOffset.top  += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
 			parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
 		}

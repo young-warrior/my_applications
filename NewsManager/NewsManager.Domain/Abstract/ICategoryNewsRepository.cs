@@ -13,10 +13,10 @@
 
         CategoryNews FindById(int id);
 
-        void Add(CategoryNews category);
+        void Create(CategoryNews category);
 
         void Delete(int id);
 
-        void AddOrUpdate(CategoryNews category);
+        void CreateOrUpdate(CategoryNews category);
     }
 }

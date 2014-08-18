@@ -37,12 +37,12 @@ namespace NewsManager.WebUI.Models
         public string BodyNews { get; set; }
 
         public NewsStatusType Status { get; set; }
-
+        [Required]
         [Display(Name = "Category")]
         public int? CategoryID { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
-
+        
         public CategoryNewsModel Category { get; set; }
     }
 }

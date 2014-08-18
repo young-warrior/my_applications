@@ -64,7 +64,7 @@ namespace NewsManager.Domain.DAL
             }
         }
 
-        public void Add(News news)
+        public void Create(News news)
         {
             if (news != null)
             {

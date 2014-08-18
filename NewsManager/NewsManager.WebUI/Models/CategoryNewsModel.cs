@@ -7,10 +7,13 @@ namespace NewsManager.WebUI.Models
     public class CategoryNewsModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int CategoryNewsID { get; set; }
 
         [Display(Name = "Category")]
+        [DataType(DataType.Text)]
         [Required(ErrorMessage = "Please enter a Category")]
+        [StringLength(200)]
         public String Name { get; set; }
     }
 }

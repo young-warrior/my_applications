@@ -36,7 +36,7 @@ $.extend($.fn, {
 			return validator;
 		}
 
-		// Add novalidate tag if HTML5.
+		// Create novalidate tag if HTML5.
 		this.attr('novalidate', 'novalidate');
 
 		validator = new $.validator( options, this[0] );

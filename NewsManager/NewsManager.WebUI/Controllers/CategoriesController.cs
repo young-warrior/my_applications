@@ -115,7 +115,7 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.repo.Add(this.ConvertCategoryModelToEntity(category));
+                this.repo.Create(this.ConvertCategoryModelToEntity(category));
                 return this.RedirectToAction("List");
             }
 
@@ -147,7 +147,7 @@
         {
             if (this.ModelState.IsValid)
             {
-                this.repo.AddOrUpdate(this.ConvertCategoryModelToEntity(model));
+                this.repo.CreateOrUpdate(this.ConvertCategoryModelToEntity(model));
                 return this.RedirectToAction("List");
             }
             return View(model);

@@ -73,11 +73,11 @@ namespace NewsManager.Domain.DAL
             }
         }
 
-        public void AddOrUpdate(CategoryNews category)
+        public void CreateOrUpdate(CategoryNews category)
         {
             if (category.CategoryNewsID == 0)
             {
-                this.Add(category);
+                this.Create(category);
             }
             else
             {
@@ -85,7 +85,7 @@ namespace NewsManager.Domain.DAL
             }
         }
 
-        public void Add(CategoryNews news)
+        public void Create(CategoryNews news)
         {
             if (news != null)
             {

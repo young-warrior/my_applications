@@ -245,7 +245,7 @@ window.Modernizr = (function( window, document, undefined ) {
     })(),
     /*>>hasevent*/
 
-    // TODO :: Add flag for hasownprop ? didn't last time
+    // TODO :: Create flag for hasownprop ? didn't last time
 
     // hasOwnProperty shim by kangax needed for Safari 2.0 support
     _hasOwnProperty = ({}).hasOwnProperty, hasOwnProp;
@@ -1407,7 +1407,7 @@ window.Modernizr = (function( window, document, undefined ) {
     // Remove "no-js" class from <html> element, if it exists:
     docElement.className = docElement.className.replace(/(^|\s)no-js(\s|$)/, '$1$2') +
 
-                            // Add the new classes to the <html> element.
+                            // Create the new classes to the <html> element.
                             (enableClasses ? ' js ' + classes.join(' ') : '');
     /*>>cssclasses*/
 

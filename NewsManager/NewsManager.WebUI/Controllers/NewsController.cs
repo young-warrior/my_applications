@@ -101,7 +101,7 @@ namespace NewsManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                repo.Add(ConvertModelToEntity(news));
+                repo.Create(ConvertModelToEntity(news));
                 return RedirectToAction("Index");
             }
 
