@@ -83,6 +83,7 @@
     {
         <tr>
             <td>
+               
                 @Html.DisplayFor(modelItem => item.TitleShort)
             </td>
             <td>
@@ -110,9 +111,10 @@
                     {
                         onclick = String.Format("return deleleNews('{0}', {1}, '{2}');",
                             string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID,
-                            String.Format("/News/Index?page={0}&category={1}&searchString={2}&sortOrder={3}", Model.PagingInfo.CurrentPage,
+                            String.Format("/News/Index?page={0}&category={1}&searchString={2}&sortBy={3}&sortOrder={4}", Model.PagingInfo.CurrentPage,
                                 Model.CurrentCategory.HasValue ? Model.CurrentCategory.Value.ToString(CultureInfo.InvariantCulture) : "",
                                 Model.SearchString,
+                                Model.SearchBy,
                                 Model.SortOrder))
                     })
             </td>
@@ -123,7 +125,7 @@
 <div class="pager ">
     @Html.PageLinks(Model.PagingInfo, x =>
     {
-        if (Model.CurrentCategory == null && Model.SortOrder == null && Model.SearchString == null)
+        if (Model.CurrentCategory == null && Model.SortOrder == null && Model.SearchString == null && Model.SearchBy == null)
             return Url.Action("Index", new
             {
                 page = x,
@@ -134,7 +136,8 @@
                 page = x,
                 category = Model.CurrentCategory,
                 sortOrder = Model.SortOrder,
-                searchString = Model.SearchString
+                searchString = Model.SearchString,
+                searchBy = Model.SearchBy
             });
     }
         )

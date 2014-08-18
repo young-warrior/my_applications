@@ -16,5 +16,7 @@ namespace NewsManager.WebUI.Models
 
         public string SortOrder { get; set; }
         public string SearchString { get; set; }
+
+        public string SearchBy { get; set; }
     }
 }

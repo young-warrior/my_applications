@@ -18,8 +18,9 @@
         }
 
         // GET: Nav
-        public PartialViewResult Menu()
+        public PartialViewResult Menu(string category = null)
         {
+//            ViewBag.SelectedCategory = categories;
             IEnumerable<NavigationModel> categories =
                 this.repository.NewsEntities.Include(x => x.Category)
                     .Where(x => x.Category != null)

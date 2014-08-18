@@ -62,6 +62,7 @@ namespace NewsManager.WebUI.Controllers
                 CurrentCategory = category,
                 SortOrder = sortOrder,
                 SearchString = searchString,
+                SearchBy = searchBy,
                 Entities = query.ToList().Select(ConvertEntityToModel).ToList()
             };
 
