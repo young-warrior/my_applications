@@ -1,8 +1,9 @@
 ﻿@using System.Data.SqlClient
 @using System.Globalization
+@using System.Web.UI.HtmlControls
 @using NewsManager.Domain.Entities
 @using NewsManager.WebUI.Models
-@model NewsManager.WebUI.Models.NewsListModel
+@model NewsListModel
 
 @{
     ViewBag.Title = "NEWS MANAGER";
@@ -19,7 +20,7 @@
                 data: param = "",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success : successFunc
+                success: successFunc
             });
 
             function successFunc(data, status) {
@@ -41,27 +42,37 @@
         @using (Html.BeginForm(FormMethod.Get))
         {
             <p>
-                Find by Title: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string) 
+                Find by:
+            
+                @Html.RadioButton("searchBy", "Title", true)<text>Title</text>
+                @Html.RadioButton("searchBy", "Categories")<text>Category</text>
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
                 <input type="submit" value="Search" />
             </p>
-        } 
+            
+        }
+        @foreach(NewsModel item in Model.Entities)
+    {
+            
+    }
     </tr>
     <tr bgcolor="#cccccc">
         <th>
 
-            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
+            @Html.ActionLink("Title", "Index", new {sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
 
         </th>
         <th>
-            @Html.ActionLink("CreatedDate", "Index", new { sortOrder = ViewBag.DateSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
+            @Html.ActionLink("CreatedDate", "Index", new {sortOrder = ViewBag.DateSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
 
         </th>
         <th>
-            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.CategoryParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
+            @Html.ActionLink("Category", "Index", new {sortOrder = ViewBag.CategoryParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
 
         </th>
         <th>
-            Status
+            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
+
         </th>
         <th colspan="3">
             Actions
@@ -78,7 +89,7 @@
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
             <td>
-@*                @Html.DisplayFor(modelItem => item.BodyNews)*@
+                @*                @Html.DisplayFor(modelItem => item.BodyNews)*@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
@@ -96,14 +107,14 @@
                     "Index",
                     null,
                     new
-                        {
-                            onclick = String.Format("return deleleNews('{0}', {1}, '{2}');",
-                                string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID,
-                                String.Format("/News/Index?page={0}&category={1}&searchString={2}&sortOrder={3}", Model.PagingInfo.CurrentPage, 
-                                    Model.CurrentCategory.HasValue ? Model.CurrentCategory.Value.ToString(CultureInfo.InvariantCulture) : "",
-                                    Model.SearchString, 
-                                    Model.SortOrder))
-                        })
+                    {
+                        onclick = String.Format("return deleleNews('{0}', {1}, '{2}');",
+                            string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID,
+                            String.Format("/News/Index?page={0}&category={1}&searchString={2}&sortOrder={3}", Model.PagingInfo.CurrentPage,
+                                Model.CurrentCategory.HasValue ? Model.CurrentCategory.Value.ToString(CultureInfo.InvariantCulture) : "",
+                                Model.SearchString,
+                                Model.SortOrder))
+                    })
             </td>
         </tr>
     }
@@ -116,8 +127,6 @@
             return Url.Action("Index", new
             {
                 page = x,
-                
-                
             });
         return
             Url.Action("Index", new
@@ -125,8 +134,7 @@
                 page = x,
                 category = Model.CurrentCategory,
                 sortOrder = Model.SortOrder,
-                searchString =Model.SearchString
-                
+                searchString = Model.SearchString
             });
     }
         )
