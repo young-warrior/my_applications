@@ -48,21 +48,23 @@
     }
 
 </div>     
-<table>
-    
+<table class="table" >
+
     <tr bgcolor="#cccccc">
-        <th>
+        <th >
 
-            @Html.ActionLink("Title", "Index", new {sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
-
+            <div class ="hidden">
+                @Html.ActionLink("Title", "Index", new {sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
+            </div> 
         </th>
         <th>
             @Html.ActionLink("CreatedDate", "Index", new {sortOrder = ViewBag.DateSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
 
         </th>
         <th>
-            @Html.ActionLink("Category", "Index", new {sortOrder = ViewBag.CategoryParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
-
+            <div class="hidden">
+                @Html.ActionLink("Category", "Index", new {sortOrder = ViewBag.CategoryParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
+            </div>
         </th>
         <th>
             @Html.ActionLink("Status", "Index", new {sortOrder = ViewBag.StatusParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
@@ -76,22 +78,22 @@
     @foreach (NewsModel item in Model.Entities)
     {
         <tr>
-            <td>
-               
-                @Html.DisplayFor(modelItem => item.TitleShort)
+            <td >
+
+                <div class ="hidden">@Html.DisplayFor(modelItem => item.Title)</div>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
             <td>
                 @*                @Html.DisplayFor(modelItem => item.BodyNews)*@
-                @Html.DisplayFor(modelItem => item.Category.Name)
+                <div class="hidden">@Html.DisplayFor(modelItem => item.Category.Name)</div>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {id = item.NewsID}) 
+                @Html.ActionLink("Edit", "Edit", new {id = item.NewsID})
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new {id = item.NewsID})

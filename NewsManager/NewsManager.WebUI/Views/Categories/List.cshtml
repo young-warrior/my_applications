@@ -29,7 +29,7 @@
     }
 </script>
 
-<table>
+<table class="tablecategories">
     <tr>
         <p>@Html.ActionLink("Create a new Categories", "Create")</p>
     </tr>
@@ -37,8 +37,8 @@
     <tr bgcolor ="#cccccc">
 
         <th>
-            @Html.ActionLink("Category", "List", new { sortOrder = ViewBag.CategoryParm}) 
-        </th>
+             @Html.ActionLink("Category", "List", new { sortOrder = ViewBag.CategoryParm })
+</th>
         <th colspan="2">
             Actions
         </th>
@@ -48,8 +48,8 @@
     {
         <tr >
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
+                <div class="hidden">@Html.DisplayFor(modelItem => item.Name)</div>
+</td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {id = item.CategoryNewsID})
             </td>
@@ -69,7 +69,9 @@
     }
 </table>
 <div>
-    @Html.ActionLink("Back to News", "Index", "News")
+    @Html.ActionLink("Back to News", "Index", "News"
+    
+        )
 </div>
 
 <div class="pager ">

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 namespace NewsManager.Domain.DAL
 {
@@ -99,6 +101,7 @@ namespace NewsManager.Domain.DAL
                 else
                 {
                     category.IsActive = true;
+                    
                 }
 
             }

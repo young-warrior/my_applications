@@ -24,7 +24,7 @@ namespace NewsManager.WebUI.Models
         [Required(ErrorMessage = "Please enter a Title")]
         public string Title { get; set; }
 
-        public string TitleShort { get; set; }
+//        public string TitleShort { get; set; }
 
         [DataType(DataType.DateTime)]
 //        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

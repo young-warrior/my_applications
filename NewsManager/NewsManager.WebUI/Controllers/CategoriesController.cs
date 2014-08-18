@@ -1,4 +1,6 @@
-﻿namespace NewsManager.WebUI.Controllers
+﻿using System.Web.Services.Description;
+
+namespace NewsManager.WebUI.Controllers
 {
     using System;
     using System.Linq;
@@ -143,13 +145,15 @@
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CategoryNewsModel model)
+        public ActionResult Edit(CategoryNewsModel model )
         {
+            
             if (this.ModelState.IsValid)
             {
                 this.repo.CreateOrUpdate(this.ConvertCategoryModelToEntity(model));
                 return this.RedirectToAction("List");
             }
+            
             return View(model);
         }
 
@@ -166,9 +170,9 @@
             {
                 return this.HttpNotFound();
             }
-
+            
             this.repo.Delete(id.Value);
-
+           
             return new JsonResult { Data = new { deleted = true } };
         }
 

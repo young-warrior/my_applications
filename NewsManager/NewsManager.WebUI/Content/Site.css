@@ -1,97 +1,113 @@
-﻿BODY
-{
-  font-family: Cambria, Georgia, "Times New Roman";
-  margin: 0;
+﻿BODY {
+    font-family: Cambria, Georgia, "Times New Roman";
+    margin: 0;
 }
 
-DIV#header DIV.title, DIV.pager
-{
-  font: bold 1em "Arial Narrow", "Franklin Gothic Medium", Arial;
+DIV#header DIV.title, DIV.pager { font: bold 1em "Arial Narrow", "Franklin Gothic Medium", Arial; }
+
+DIV#header {
+    background-color: #444;
+    border-bottom: 2px solid #111;
+    color: White;
 }
 
-DIV#header
-{
-  background-color: #444;
-  border-bottom: 2px solid #111;
-  color: White;
-}
-
-  DIV#header DIV.title
-  {
+DIV#header DIV.title {
     font-size: 2em;
     padding: .6em;
-  }
-  DIV#content
-{
+}
+
+DIV#content {
       
-  border-left: 2px solid gray;
-  margin-left: 10em;
-  padding: 1em;
+    border-left: 2px solid gray;
+    margin-left: 10em;
+    padding: 1em;
 }
 
-DIV#categories
-{
-  float: left;
-  width: 9em;
-  padding: .3em;
+DIV#categories {
+    float: left;
+    padding: .3em;
+    width: 9em;
+
 }
-DIV#categories A
-{
-  font: bold 1.1em "Arial Narrow","Franklin Gothic Medium",Arial; display: block;
-  text-decoration: none; padding: .6em; color: Black;
-  border-bottom: 1px solid silver;
-}
-DIV#categories A.selected { background-color: #666; color: White; }
-DIV#categories A:hover { background-color: #CCC; }
-DIV#categories A.selected:hover { background-color: #666; }
-DIV.pager
-{
-  text-align: center;
-  border-top: 2px solid silver;
-  padding: .5em 0 0 0;
-  margin-top: 1em;
-}
-DIV.pager A
-  {
-    font-size: 1.1em;
-    color: #666;
+
+DIV#categories A {
+    border-bottom: 1px solid silver;
+    color: Black;
+    display: block;
+    font: bold 1.1em "Arial Narrow", "Franklin Gothic Medium", Arial;
+    padding: .6em;
     text-decoration: none;
+    
+}
+
+DIV#categories A.selected {
+    background-color: #666;
+    color: White;
+    
+
+}
+.NavCategory {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 124px;
+}
+
+DIV#categories A:hover { background-color: #CCC; }
+
+DIV#categories A.selected:hover { background-color: #666; }
+
+DIV.pager {
+    border-top: 2px solid silver;
+    margin-top: 1em;
+    padding: .5em 0 0 0;
+    text-align: center;
+    
+}
+
+DIV.pager A {
+    color: #666;
+    font-size: 1.1em;
     padding: 0 .4em 0 .4em;
-  }
+    text-decoration: none;
+}
 
-    DIV.pager A:hover
-    {
-      background-color: Silver;
-    }
+DIV.pager A:hover { background-color: Silver; }
 
-    DIV.pager A.selected
-    {
-      background-color: #353535;
-      color: White;
-    }
-    hr 
-    {
-       border-width: 0px; 
-    }
-    div.form-horizontal 
-   {
-       font: bold 1.1em "Arial Narrow"
-   }
-   
-  #Category_Name, #Title {
-      width: 400px;height: 20px;
-  }
-  textarea {
-      width: 400px;
-  }
+DIV.pager A.selected {
+    background-color: #353535;
+    color: White;
+}
+
+hr { border-width: 0px; }
+
+div.form-horizontal { font: bold 1.1em "Arial Narrow" }
+
+#Category_Name, #Title, #CategoryID {
+    height: 20px;
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+#BodyNews {
+    width: 396px;
+}
 table {
-    
-    }
-   table tr td {
-       width: 50px;
-    
-   
-   }    
+    width: 700px;
+}
+.tablecategories {
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 250px;
+    white-space: nowrap;
+}
+.hidden {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 250px;   
+    white-space: nowrap;   
+} 
 
 
   

@@ -13,6 +13,7 @@
 
         CategoryNews FindById(int id);
 
+        
         void Create(CategoryNews category);
 
         void Delete(int id);
