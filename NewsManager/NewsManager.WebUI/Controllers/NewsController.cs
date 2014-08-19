@@ -277,8 +277,8 @@ namespace NewsManager.WebUI.Controllers
         {
             // Prepare filter parameter for Title, CreatesDate
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
-            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "Date" : "CreateDate";
-            ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
+            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "CreateDateDown" : "CreateDate";
+            ViewBag.CategoryParm = sortOrder == "Category" ? "CategoryDown" : "Category";
             ViewBag.StatusParm = sortOrder == "Status" ? "StatusDown" : "Status";
         }
 
@@ -289,13 +289,16 @@ namespace NewsManager.WebUI.Controllers
                 case "Title":
                     query = query.OrderByDescending(s => s.Title);
                     break;
-                case "Date":
+                case "CreateDate":
                     query = query.OrderBy(s => s.CreatedDate);
                     break;
-                case "CreateDate":
+                case "CreateDateDown":
                     query = query.OrderByDescending(s => s.CreatedDate);
                     break;
                 case "Category":
+                    query = query.OrderBy(s => s.Category.Name);
+                    break;
+                case "CategoryDown":
                     query = query.OrderByDescending(s => s.Category.Name);
                     break;
                 case "Status":
