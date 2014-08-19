@@ -1,10 +1,11 @@
-﻿
+﻿@using NewsManager.Domain.Entities
+@using NewsManager.WebUI.Controllers
+@using NewsManager.WebUI.Models
 @model NewsManager.WebUI.Models.NewsModel
 
 @{
     ViewBag.Title = "Details";
 }
-
 
 <div>
     <hr />
@@ -27,13 +28,10 @@
         <dd>
             @Html.DisplayFor(model => model.BodyNews)
         </dd>
-        
-        
+       
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new {id = Model.NewsID}) |
-
-@Html.ActionLink("Back to News", "Index")
-</p>
+    <input type="button" value="RETURN" onclick="history.go(-1)">
+   
