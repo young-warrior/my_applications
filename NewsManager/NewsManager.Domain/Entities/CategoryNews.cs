@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NewsManager.Domain.Entities
 {
     using System;
@@ -11,10 +13,13 @@ namespace NewsManager.Domain.Entities
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int CategoryNewsID { get; set; }
-
+        [Display(Name = "Category")]
+        [Required]
+        [DataType(DataType.MultilineText)]
         public String Name { get; set; }
-
+        [Required]
         public bool IsActive { get; set; }
     }
 }

@@ -50,6 +50,7 @@ DIV#categories A.selected {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 124px;
+    white-space: nowrap;  
 }
 
 DIV#categories A:hover { background-color: #CCC; }
