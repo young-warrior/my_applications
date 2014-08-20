@@ -41,6 +41,7 @@ namespace NewsManager.WebUI.Models
         [Display(Name = "Category")]
         public int? CategoryID { get; set; }
 
-        public CategoryNewsModel Category { get; set; }
+        [Display(Name = "Category")]
+        public String CategoryName { get; set; }
     }
 }

@@ -59,7 +59,7 @@
     <tr bgcolor ="#cccccc">
 
         <th>
-            @Html.ActionLink("Category", "List", new {sortOrder = ViewBag.CategoryParm})
+            @Html.Partial("_SmartLink", Model, new ViewDataDictionary { { "ColumnName", "Name" }, { "DisplayName", "Name" } })
         </th>
         <th colspan="2">
             Actions
@@ -84,7 +84,7 @@
                     {
                         onclick = String.Format("return deleleCategory('{0}', {1}, '{2}');",
                             string.Format("Are you sure you wish to delete {0} category?", item.Name), item.CategoryNewsID,
-                            String.Format("/Categories/List?page={0}", Model.PagingInfo.CurrentPage))
+                            String.Format("/Categories/List?page={0}", Model.CurrentPageIndex))
                     })
             </td>
         </tr>
@@ -95,26 +95,5 @@
 </div>
 
 <div class="pager ">
-    @Html.PageLinks(Model.PagingInfo, x =>
-    {
-        if (Model.SortOrder == null && Model.PagingInfo == null)
-            return Url.Action("List", new
-            {
-                page = x
-            });
-        return
-            Url.Action("List", new
-            {
-                page = x,
-                category = Model.SortOrder
-            });
-    }
-        )
+    @Html.Partial("_Pager", Model)
 </div>
-      
-
-
-
-
-
-

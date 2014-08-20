@@ -7,13 +7,12 @@
 
     using NewsManager.Domain.DAL;
     using NewsManager.Domain.Entities;
+    using NewsManager.WebUI.Helpers;
     using NewsManager.WebUI.Models;
 
     public class CategoriesController : Controller
     {
         private readonly ICategoryNewsRepository repo;
-
-        public int PageSize = 10;
 
         public CategoriesController(ICategoryNewsRepository categoryNewsRepository)
         {
@@ -25,62 +24,44 @@
         #region Actions
 
         // GET: News
-        public ActionResult List(string sortOrder, int page = 1)
+        public ActionResult List(string sortBy = "Name", bool ascending = true, int page = 1, int pageSize = 7)
         {
-            // gets news by category
-            IQueryable<CategoryNews> query = this.repo.CategoryNewsEntities;
-
-            query = this.ApplySorting(query, sortOrder);
-            this.SetFilterParameters(sortOrder);
-
-            if (!String.IsNullOrEmpty(sortOrder))
-            {
-                query = this.ApplySorting(query, sortOrder);
-            }
-
-            int totalCount = query.Count();
-            query = this.ApplyPaging(query, page);
             var model = new CategoriesNewListModel
                             {
-                                PagingInfo =
-                                    new PagingInfo
-                                        {
-                                            CurrentPage = page,
-                                            ItemsPerPage = this.PageSize,
-                                            TotalItems = totalCount
-                                        },
-                                SortOrder = sortOrder,
-                                Entities =
-                                    query.ToList().Select(this.ConvertEntityToModel).ToList()
+                                SortAscending = ascending,
+                                SortBy = sortBy,
+                
+                                // Paging-related properties
+                                CurrentPageIndex = page,
+                                PageSize = pageSize  
                             };
+
+
+            // gets news by category
+            IQueryable<CategoryNewsModel> query = this.repo.CategoryNewsEntities.Select(x=>new CategoryNewsModel
+                                                                                               {
+                                                                                                   CategoryNewsID = x.CategoryNewsID, 
+                                                                                                   Name = x.Name
+                                                                                               });
+            query = this.ApplySorting(query, model.SortExpression);
+            
+            int totalCount = query.Count();
+            query = this.ApplyPaging(query, page, pageSize);
+            
+            model.TotalRecordCount = totalCount;
+            model.Entities = query.ToList();
 
             return View(model);
         }
 
-        private IQueryable<CategoryNews> ApplyPaging(IQueryable<CategoryNews> query, int page)
+        private IQueryable<CategoryNewsModel> ApplyPaging(IQueryable<CategoryNewsModel> query, int page, int pageSize)
         {
-            return query.Skip((page - 1) * this.PageSize).Take(this.PageSize);
+            return query.Skip((page - 1) * pageSize).Take(pageSize);
         }
 
-        private void SetFilterParameters(string sortOrder)
+        private IQueryable<CategoryNewsModel> ApplySorting(IQueryable<CategoryNewsModel> query, String sortExpression)
         {
-            // Prepare filter parameter for Title, CreatesDate
-            this.ViewBag.CategoryParm = String.IsNullOrEmpty(sortOrder) ? "Category" : "";
-        }
-
-        private IQueryable<CategoryNews> ApplySorting(IQueryable<CategoryNews> query, string sortOrder)
-        {
-            switch (sortOrder)
-            {
-                case "Category":
-                    query = query.OrderByDescending(s => s.Name);
-                    break;
-                default:
-                    query = query.OrderBy(s => s.Name);
-                    break;
-            }
-
-            return query;
+            return query.OrderBy(sortExpression);
         }
 
         #endregion
