@@ -51,23 +51,23 @@
 <table class="table" >
 
     <tr bgcolor="#cccccc">
-        <th >
+        <th>
 
-            <div class ="hidden">
-                @Html.ActionLink("Title", "Index", new {sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
-            </div> 
+            <div class="hidden">
+                @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
+            </div>
         </th>
         <th>
-            @Html.ActionLink("CreatedDate", "Index", new {sortOrder = ViewBag.DateSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
+            @Html.ActionLink("CreatedDate", "Index", new { sortOrder = ViewBag.DateSortParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
 
         </th>
         <th>
             <div class="hidden">
-                @Html.ActionLink("Category", "Index", new {sortOrder = ViewBag.CategoryParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
+                @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.CategoryParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
             </div>
         </th>
         <th>
-            @Html.ActionLink("Status", "Index", new {sortOrder = ViewBag.StatusParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory})
+            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusParm, carrentFilter = ViewBag.CarrentFilter, category = Model.CurrentCategory })
 
         </th>
         <th colspan="3">
@@ -90,14 +90,14 @@
                 <div class="hidden">@Html.DisplayFor(modelItem => item.Category.Name)</div>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
+                <div class="collumn">@Html.DisplayFor(modelItem => item.Status)</div>
+</td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {id = item.NewsID})
-            </td>
+                <div>@Html.ActionLink("Edit", "Edit", new { id = item.NewsID })</div>
+</td>
             <td>
-                @Html.ActionLink("Details", "Details", new {id = item.NewsID})
-            </td>
+                <div>@Html.ActionLink("Details", "Details", new { id = item.NewsID })</div>
+</td>
             <td>
                 @Html.ActionLink(
                     "Delete",

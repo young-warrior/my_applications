@@ -94,7 +94,7 @@ div.form-horizontal { font: bold 1.1em "Arial Narrow" }
     width: 396px;
 }
 table {
-    width: 700px;
+    width: 900px;
 }
 .tablecategories {
     width: 300px;
@@ -109,6 +109,6 @@ table {
     width: 250px;   
     white-space: nowrap;   
 } 
-
-
-  
+.collumn {
+    width: 100px;
+}

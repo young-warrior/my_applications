@@ -3,27 +3,50 @@
 @model CategoriesNewListModel
 @{
     ViewBag.Title = "LIST OF CATEGORY";
-    this.Layout = "../Shared/_LayoutCategory.cshtml";
+    Layout = "../Shared/_LayoutCategory.cshtml";
 }
 
 <script>
     function deleleCategory(message, id, url) {
 
         var serviceUrl = '/Categories/Delete?id=' + id;
-        if (confirm(message)) {
+        if (confirm(message) == true) {
             $.ajax({
                 type: "POST",
                 url: serviceUrl,
                 data: param = "",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success : successFunc
+                success: successFunc,
             });
+}
             function successFunc(data, status) {
                 window.location = url;
                 console.log('Refresh page to ' + url);
             }
-        }
+            function successFunc(data) {
+                if (data && !data.deleted) {
+                    
+                    if (confirm('This category has news. Do you want to delete it?')) {
+                        //TODO: Вызов delete action again
+                        var serviceUrldel = '/Categories/DeleteNews?id=' + id;
+                        $.ajax({
+                                type: "POST",
+                                url: serviceUrldel,
+                                data: param = "",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: successFunc,
+
+                        });
+                        window.location = url;
+                        console.log('Refresh page to ' + url);
+                       }
+                }
+               
+            }
+       
+
 
         return false;
     }
@@ -37,8 +60,8 @@
     <tr bgcolor ="#cccccc">
 
         <th>
-             @Html.ActionLink("Category", "List", new { sortOrder = ViewBag.CategoryParm })
-</th>
+            @Html.ActionLink("Category", "List", new {sortOrder = ViewBag.CategoryParm})
+        </th>
         <th colspan="2">
             Actions
         </th>
@@ -49,7 +72,7 @@
         <tr >
             <td>
                 <div class="hidden">@Html.DisplayFor(modelItem => item.Name)</div>
-</td>
+            </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {id = item.CategoryNewsID})
             </td>
@@ -61,7 +84,7 @@
                     new
                     {
                         onclick = String.Format("return deleleCategory('{0}', {1}, '{2}');",
-                            string.Format("Are you sure you wish to delete {0} category?", item.Name), item.CategoryNewsID, 
+                            string.Format("Are you sure you wish to delete {0} category?", item.Name), item.CategoryNewsID,
                             String.Format("/Categories/List?page={0}", Model.PagingInfo.CurrentPage))
                     })
             </td>
@@ -69,7 +92,7 @@
     }
 </table>
 <div>
-    <input type="button" value="RETURN" onclick="history.go(-1)">
+    <input type="button" value="RETURN" onclick="document.location.href = '/'">
 </div>
 
 <div class="pager ">
@@ -85,7 +108,6 @@
             {
                 page = x,
                 category = Model.SortOrder
-                
             });
     }
         )

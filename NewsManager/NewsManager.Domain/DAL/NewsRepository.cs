@@ -57,9 +57,11 @@ namespace NewsManager.Domain.DAL
         public void Delete(int id)
         {
             News news = FindById(id);
+             var category = this.FindCategoryById(news.Category.CategoryNewsID);
             if (news != null)
             {
                 news.IsActive = false;
+                category.IsKey = false;
                 _context.SaveChanges();
             }
         }
@@ -81,6 +83,7 @@ namespace NewsManager.Domain.DAL
                 {
                     //set category as active
                     category.IsActive = true;
+                    category.IsKey = true;
                     news.Category = category;
                 }
                 

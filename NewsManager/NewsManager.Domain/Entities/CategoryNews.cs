@@ -10,6 +10,7 @@ namespace NewsManager.Domain.Entities
         public CategoryNews()
         {
             IsActive = true;
+            IsKey = false;
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,5 +22,7 @@ namespace NewsManager.Domain.Entities
         public String Name { get; set; }
         [Required]
         public bool IsActive { get; set; }
+        public bool IsKey { get; set; }
+
     }
 }

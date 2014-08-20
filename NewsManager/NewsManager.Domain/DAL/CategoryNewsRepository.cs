@@ -101,7 +101,7 @@ namespace NewsManager.Domain.DAL
                 else
                 {
                     category.IsActive = true;
-                    
+                    category.IsKey = false;
                 }
 
             }
