@@ -104,7 +104,7 @@
                         {
                             onclick = String.Format("return deleleNews('{0}', {1}, '{2}');",
                                 string.Format("Are you sure you wish to delete {0} news?", item.Title), item.NewsID,
-                                String.Format("/News/Index?page={0}&category={1}&searchString={2}&searchBy={3}&sortBy={4}&ascending={5}", Model.CurrentPageIndex,
+                                String.Format("/News/Index?category={0}&searchString={1}&searchBy={2}&sortBy={3}&ascending={4}", 
                                     Model.CurrentCategory.HasValue ? Model.CurrentCategory.Value.ToString(CultureInfo.InvariantCulture) : "",
                                     Model.SearchString,
                                     Model.SearchBy, Model.SortBy, Model.SortAscending))
