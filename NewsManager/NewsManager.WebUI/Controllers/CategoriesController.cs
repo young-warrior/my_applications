@@ -101,6 +101,7 @@
 
         public ActionResult Create()
         {
+            ViewBag.IsNew = true;
             return this.View("Edit", new CategoryNewsModel());
         }
 
@@ -117,7 +118,8 @@
                 return this.RedirectToAction("List");
             }
 
-            return View(category);
+            ViewBag.IsNew = true;
+            return View("Edit", category);
         }
 
         // GET: News/Edit/5
@@ -133,6 +135,8 @@
                 return this.HttpNotFound();
             }
 
+
+            ViewBag.IsNew = false;
             return this.View(this.ConvertEntityToModel(category));
         }
 

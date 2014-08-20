@@ -168,6 +168,7 @@
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Formator.cs" />
+    <Compile Include="Models\Validators\CategoryDuplicationValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -273,7 +274,6 @@
     <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\Categories\List.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
-    <Content Include="Views\Categories\Create.cshtml" />
     <Content Include="Views\Shared\_LayoutCategory.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutHome.cshtml" />

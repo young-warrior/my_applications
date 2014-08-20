@@ -4,6 +4,9 @@ namespace NewsManager.WebUI.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using NewsManager.WebUI.Models.Validators;
+
+    [CategoryDuplicationValidator(ErrorMessage = "This category name is used. Please enter another name.")]
     public class CategoryNewsModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
