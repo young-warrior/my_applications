@@ -19,34 +19,33 @@
                 dataType: "json",
                 success: successFunc,
             });
-}
-            function successFunc(data, status) {
-                window.location = url;
-                console.log('Refresh page to ' + url);
-            }
-            function successFunc(data) {
-                if (data && !data.deleted) {
-                    
-                    if (confirm('This category has news. Do you want to delete it?')) {
-                        //TODO: Вызов delete action again
-                        var serviceUrldel = '/Categories/DeleteNews?id=' + id;
-                        $.ajax({
-                                type: "POST",
-                                url: serviceUrldel,
-                                data: param = "",
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: successFunc,
+        }
 
-                        });
-                        window.location = url;
-                        console.log('Refresh page to ' + url);
-                       }
+        function successFunc(data) {
+            if (data) {
+                if (data.deleted) {
+                    window.location = url;
+                    return;
                 }
-               
-            }
-       
+                if (confirm('This category has news. Do you want to delete it with news?')) {
+                    var actionUrl = '/Categories/DeleteWithNews?id=' + id;
+                    $.ajax({
+                        type: "POST",
+                        url: actionUrl,
+                        data: param = "",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.deleted) {
+                                window.location = url;
+                                console.log('Refresh page to ' + url);
+                            }
+                        }
+                    });
 
+                }
+            }
+        }
 
         return false;
     }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.Remoting.Messaging;
 
 namespace NewsManager.Domain.DAL
 {
@@ -52,7 +50,12 @@ namespace NewsManager.Domain.DAL
         {
             
             return context.CategoriesNews.SingleOrDefault(b => b.Name == category); 
+        }
 
+        public bool HasNews(int categoryId)
+        {
+            return newsRepo.FindByCategoryId(categoryId)
+                .Any();
         }
 
         /// <summary>
@@ -101,7 +104,6 @@ namespace NewsManager.Domain.DAL
                 else
                 {
                     category.IsActive = true;
-                    category.IsKey = false;
                 }
 
             }

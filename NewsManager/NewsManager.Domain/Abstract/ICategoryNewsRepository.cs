@@ -13,6 +13,7 @@
 
         CategoryNews FindById(int id);
 
+        bool HasNews(int categoryId);
         
         void Create(CategoryNews category);
 
