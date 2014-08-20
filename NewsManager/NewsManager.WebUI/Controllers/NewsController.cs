@@ -89,7 +89,8 @@ namespace NewsManager.WebUI.Controllers
         // GET: News/Create
         public ActionResult Create()
         {
-            return View("Edit", new NewsModel {CategoryID = null, Categories = GetCategories()});
+            ViewBag.Categories = GetCategories();
+            return View("Edit", new NewsModel {CategoryID = null });
         }
 
         // POST: News/Create
@@ -105,7 +106,7 @@ namespace NewsManager.WebUI.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(news);
+            return View("Edit", news);
         }
 
         // GET: News/Edit/5
@@ -122,7 +123,7 @@ namespace NewsManager.WebUI.Controllers
             }
 
             NewsModel model = ConvertEntityToModel(news);
-            model.Categories = GetCategories();
+            ViewBag.Categories = GetCategories();
 
             return View(model);
         }
@@ -154,7 +155,7 @@ namespace NewsManager.WebUI.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.Categories = GetCategories();
+            ViewBag.Categories = GetCategories();
 
             return View(model);
         }
