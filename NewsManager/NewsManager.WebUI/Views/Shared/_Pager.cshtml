@@ -1,6 +1,6 @@
 ﻿@model NewsManager.WebUI.Models.GridModel
 
-<div class="pager">
+<div>
 @{
     // Create Previous link
     Html.RenderPartial("_PagerLink", Model, new ViewDataDictionary { { "Text", "<< Previous" }, { "PageIndex", Model.CurrentPageIndex - 1 }, { "Selected", false }, { "Inactive", Model.CurrentPageIndex == 1 } });

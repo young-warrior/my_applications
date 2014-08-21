@@ -21,6 +21,7 @@ DIV#content {
     border-left: 2px solid gray;
     margin-left: 10em;
     padding: 1em;
+    width: 1103px;
 }
 
 DIV#categories {
@@ -43,14 +44,12 @@ DIV#categories A {
     white-space: nowrap; 
 }
 
-DIV#categories div.A.selected {
+DIV#categories A.selected {
     background-color: #666;
     color: White;
     
 
 }
-.NavCategory {
- }
 
 DIV#categories A:hover { background-color: #CCC; }
 
@@ -146,26 +145,26 @@ td.pager div {
 
 a.pagerButton, a.pagerButton:visited
 {
-    border: solid 1px #eee;
+    
     padding: 4px;
     text-decoration: none;
-    color: #006;
+    color: #353535;
     margin: 0px 2px 0px 2px;
 }
 
 a.pagerButton:hover
 {
-    border: solid 1px black;
-    color: Black;
+   
+    color: #353535;
 }
 
 a.pagerButtonCurrentPage
 {
-    border: solid 1px #00a;
+    border: solid 1px white;
     padding: 4px;
     text-decoration: none;
     color: White;
-    background-color: #006;
+    background-color: #353535;
     margin: 0px 2px 0px 2px;
 }
 

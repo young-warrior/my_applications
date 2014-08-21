@@ -99,6 +99,8 @@ namespace NewsManager.Domain.Migrations
                     Status = NewsStatusType.inactive
                 }
             };
+            news.ForEach(s => context.News.Add(s));
+            context.SaveChanges();
         }
     }
 }
