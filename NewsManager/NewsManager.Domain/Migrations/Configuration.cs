@@ -1,13 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using NewsManager.Domain.DAL;
 using NewsManager.Domain.Entities;
 
 namespace NewsManager.Domain.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
-
     internal sealed class Configuration : DbMigrationsConfiguration<DBContext>
     {
         public Configuration()
@@ -18,89 +17,118 @@ namespace NewsManager.Domain.Migrations
 
         protected override void Seed(DBContext context)
         {
-            var news = new List<News>
+            try
             {
-                new News
+                var categories = new List<CategoryNews>
                 {
-                    NewsID = 1,
-                    Title = "TITLE NEWS 1",
-                    CreatedDate = DateTime.Today,
-                    BodyNews = "BODY NEWS",
-                    Category =
-                        new CategoryNews
-                        {
-                            Name = "SPORT"
-                        },
-                    Status = NewsStatusType.active
-                },
-                new News
+                    new CategoryNews
+                    {
+                        CategoryNewsID = 1,
+                        Name = "SPORT"
+                    },
+                    new CategoryNews
+                    {
+                        CategoryNewsID = 2,
+                        Name = "TITLE"
+                    },
+                    new CategoryNews
+                    {
+                        CategoryNewsID = 3,
+                        Name = "TITLE 3"
+                    },
+                    new CategoryNews
+                    {
+                        CategoryNewsID = 4,
+                        Name = "WEATHER"
+                    },
+                    new CategoryNews
+                    {
+                        CategoryNewsID = 5,
+                        Name = "ART"
+                    },
+                    new CategoryNews
+                    {
+                        CategoryNewsID = 6,
+                        Name = "ARTasda"
+                    },
+                };
+
+                var news = new List<News>
                 {
-                    NewsID = 2,
-                    Title = "TITLE NEWS 2",
-                    CreatedDate = DateTime.Today,
-                    BodyNews = "THIS IS UNREAD NEWS",
-                    Category =
-                        new CategoryNews
-                        {
-                            Name = "TITLE"
-                        },
-                    Status = NewsStatusType.inactive
-                },
-                new News
+                    new News
+                    {
+                        NewsID = 1,
+                        Title = "TITLE NEWS 1",
+                        CreatedDate = DateTime.Today,
+                        BodyNews = "BODY NEWS",
+                        Category = categories[0],
+                        Status = NewsStatusType.active,
+                    },
+                    new News
+                    {
+                        NewsID = 2,
+                        Title = "TITLE NEWS 2",
+                        CreatedDate = DateTime.Today,
+                        BodyNews = "THIS IS UNREAD NEWS",
+                        Category = categories[1],
+                        Status = NewsStatusType.inactive
+                    },
+                    new News
+                    {
+                        NewsID = 3,
+                        Title = "TITLE NEWS 3",
+                        CreatedDate = DateTime.Today,
+                        BodyNews = "THIS IS UNREAD NEWS",
+                        Category = categories[2],
+                        Status = NewsStatusType.inactive
+                    },
+                    new News
+                    {
+                        NewsID = 4,
+                        Title = "TITLE NEWS 4",
+                        CreatedDate = DateTime.Today,
+                        BodyNews = "THIS IS UNREAD NEWS",
+                        Category = categories[3],
+                        Status = NewsStatusType.inactive
+                    },
+                    new News
+                    {
+                        NewsID = 5,
+                        Title = "TITLE NEWS 5",
+                        CreatedDate = DateTime.Today,
+                        BodyNews = "THIS IS UNREAD NEWS",
+                        Category = categories[4],
+                        Status = NewsStatusType.inactive
+                    },
+                    new News
+                    {
+                        NewsID = 6,
+                        Title = "TITLE NEWS 6",
+                        CreatedDate = DateTime.Today,
+                        BodyNews = "THIS IS UNREAD NEWS",
+                        Category = categories[5],
+                        Status = NewsStatusType.inactive
+                    }
+                };
+                context.CategoriesNews.AddOrUpdate(c => c.CategoryNewsID, categories.ToArray());
+                context.News.AddOrUpdate(s => s.NewsID, news.ToArray());
+
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (DbEntityValidationResult eve in e.EntityValidationErrors)
                 {
-                    NewsID = 3,
-                    Title = "TITLE NEWS 3",
-                    CreatedDate = DateTime.Today,
-                    BodyNews = "THIS IS UNREAD NEWS",
-                    Category =
-                        new CategoryNews
-                        {
-                            Name = "TITLE 3"
-                        },
-                    Status = NewsStatusType.inactive
-                },
-                new News
-                {
-                    NewsID = 4,
-                    Title = "TITLE NEWS 4",
-                    CreatedDate = DateTime.Today,
-                    BodyNews = "THIS IS UNREAD NEWS",
-                    Category =
-                        new CategoryNews
-                        {
-                            Name = "WEATHER"
-                        },
-                    Status = NewsStatusType.inactive
-                },
-                new News
-                {
-                    NewsID = 5,
-                    Title = "TITLE NEWS 5",
-                    CreatedDate = DateTime.Today,
-                    BodyNews = "THIS IS UNREAD NEWS",
-                    Category =
-                        new CategoryNews
-                        {
-                            Name ="WEATHER"
-                        },
-                    Status = NewsStatusType.inactive
-                },
-                new News
-                {
-                    NewsID = 6,
-                    Title = "TITLE NEWS 6",
-                    CreatedDate = DateTime.Today,
-                    BodyNews = "THIS IS UNREAD NEWS",
-                    Category =
-                        new CategoryNews
-                        {
-                            Name = "ART"
-                        },
-                    Status = NewsStatusType.inactive
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (DbValidationError ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
                 }
-            };
-            news.ForEach(s => context.News.Add(s));
-            context.SaveChanges();
+                throw;
+            }
         }
     }
 }
