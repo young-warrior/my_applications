@@ -57,6 +57,7 @@
     <Compile Include="Entities\CategoryNews.cs" />
     <Compile Include="Entities\News.cs" />
     <Compile Include="Entities\NewsStatusType.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

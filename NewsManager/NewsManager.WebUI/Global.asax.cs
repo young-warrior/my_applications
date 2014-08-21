@@ -28,6 +28,7 @@ namespace NewsManager.WebUI
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
             
             Database.SetInitializer(new DropCreateDatabaseAlways<DBContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DBContext>());
         }
     }
 }
