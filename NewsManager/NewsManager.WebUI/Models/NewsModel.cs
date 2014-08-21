@@ -33,7 +33,7 @@ namespace NewsManager.WebUI.Models
         [Display(Name = "Input field")]
         [Required(ErrorMessage = "Please enter a News")]
         [DataType(DataType.MultilineText)]
-        [StringLength(200)]
+        [StringLength(2000)]
         public string BodyNews { get; set; }
 
         public NewsStatusType Status { get; set; }

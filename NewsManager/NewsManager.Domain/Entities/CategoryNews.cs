@@ -15,9 +15,11 @@ namespace NewsManager.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int CategoryNewsID { get; set; }
+        
         [Display(Name = "Category")]
         [Required]
         [DataType(DataType.MultilineText)]
+        [StringLength(200)]
         public String Name { get; set; }
         [Required]
         public bool IsActive { get; set; }

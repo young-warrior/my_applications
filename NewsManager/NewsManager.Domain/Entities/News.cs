@@ -28,13 +28,15 @@ namespace NewsManager.Domain.Entities
         [Display(Name = "Input field")]
         [Required]
         [DataType(DataType.MultilineText)]
-        [StringLength(200)]
+        [StringLength(2000)]
         public string BodyNews { get; set; }
         [Required]
         public NewsStatusType Status { get; set; }
-
+        [Required]
         public virtual CategoryNews Category { get; set; }
         [Required]
         public bool IsActive { get; set; }
+
+        
     }
 }

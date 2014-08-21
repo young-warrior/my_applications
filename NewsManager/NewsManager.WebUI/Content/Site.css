@@ -27,6 +27,7 @@ DIV#categories {
     float: left;
     padding: .3em;
     width: 9em;
+     
 
 }
 
@@ -37,21 +38,19 @@ DIV#categories A {
     font: bold 1.1em "Arial Narrow", "Franklin Gothic Medium", Arial;
     padding: .6em;
     text-decoration: none;
-    
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
 }
 
-DIV#categories A.selected {
+DIV#categories div.A.selected {
     background-color: #666;
     color: White;
     
 
 }
 .NavCategory {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 124px;
-    white-space: nowrap;  
-}
+ }
 
 DIV#categories A:hover { background-color: #CCC; }
 
