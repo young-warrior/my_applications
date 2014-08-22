@@ -18,5 +18,7 @@ namespace NewsManager.WebUI.Models
         [Required(ErrorMessage = "Please enter a Category")]
         [StringLength(200)]
         public String Name { get; set; }
+
+
     }
 }

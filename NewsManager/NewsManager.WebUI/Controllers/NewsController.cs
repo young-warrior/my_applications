@@ -55,7 +55,6 @@ namespace NewsManager.WebUI.Controllers
                         {
                             NewsID = news.NewsID,
                             BodyNews = news.BodyNews,
-                //            model.TitleShort = GetShortTitle(news.Title);
                             Title = news.Title,
                             Status = news.Status,
                             CreatedDate = news.CreatedDate,
@@ -65,8 +64,6 @@ namespace NewsManager.WebUI.Controllers
 
             
             query = ApplySorting(query, model.SortExpression);
-            query = ApplyFilter(query, searchString, searchBy);
-            
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -233,27 +230,7 @@ namespace NewsManager.WebUI.Controllers
 
             return model;
         }
-        //Receiving from the base short title
-//        private string GetShortTitle(string title)
-//        {
-//            string[] b = title.Split(new[] {' '});
-//            var words = new List<string>();
-//            int count;
-//            foreach (string word in b)
-//            {
-//                if (!string.IsNullOrEmpty(word))
-//                {
-//                    words.Add(word);
-//                    if (words.Count() == 5)
-//                    {
-//                        words.Add("...");
-//                        break;
-//                    }
-//                }
-//            }
-//            return String.Join(" ", words);
-//        }
-
+       
         private IQueryable<NewsModel> ApplyFilter(IQueryable<NewsModel> query, string searchString, string searchBy)
         {
             if (!String.IsNullOrEmpty(searchString))
@@ -276,46 +253,9 @@ namespace NewsManager.WebUI.Controllers
             return Queryable.Take(Queryable.Skip(query, (page - 1) * pageSize), pageSize);
 
         }
-
-//        private void SetFilterParameters(string sortOrder)
-//        {
-//            // Prepare filter parameter for Title, CreatesDate
-//            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Title" : "";
-//            ViewBag.DateSortParm = sortOrder == "CreateDate" ? "CreateDateDown" : "CreateDate";
-//            ViewBag.CategoryParm = sortOrder == "Category" ? "CategoryDown" : "Category";
-//            ViewBag.StatusParm = sortOrder == "Status" ? "StatusDown" : "Status";
-//        }
-
+        
         private IQueryable<NewsModel> ApplySorting(IQueryable<NewsModel> query, String sortExpression)
         {
-//            switch (sortOrder)
-//            {
-//                case "Title":
-//                    query = query.OrderByDescending(s => s.Title);
-//                    break;
-//                case "CreateDate":
-//                    query = query.OrderBy(s => s.CreatedDate);
-//                    break;
-//                case "CreateDateDown":
-//                    query = query.OrderByDescending(s => s.CreatedDate);
-//                    break;
-//                case "Category":
-//                    query = query.OrderBy(s => s.Category.Name);
-//                    break;
-//                case "CategoryDown":
-//                    query = query.OrderByDescending(s => s.Category.Name);
-//                    break;
-//                case "Status":
-//                    query = query.OrderByDescending(s => s.Status);
-//                    break;
-//                case "StatusDown":
-//                    query = query.OrderBy(s => s.Status);
-//                    break;
-//                default:
-//                    query = query.OrderBy(s => s.Title);
-//                    break;
-//            }
-
             return query.OrderBy(sortExpression);
         }
 
